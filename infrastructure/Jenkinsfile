@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
 
     stages {
         stage('Checkout') {
@@ -22,7 +26,7 @@ pipeline {
                     jobDsl(additionalClasspath: 'src/',
                         lookupStrategy: 'SEED_JOB',                        
                         // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
-                        targets: ['jenkins/dsl/pipelinejob/DSL*.groovy'].join('\n'),                
+                        targets: ['infrastructure/jenkins/dsl/pipelinejob/DSL*.groovy'].join('\n'),                
                         removedJobAction: 'DELETE', // Action to take on removed jobs
                         // ignoreExisting: true, // Update existing jobs without recreating                            
                         additionalParameters: additionalParams)
