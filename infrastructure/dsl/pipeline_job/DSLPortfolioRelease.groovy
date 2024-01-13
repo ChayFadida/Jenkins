@@ -1,5 +1,5 @@
 def JOB_NAME = "pipelines/Keiko-Funcsim-Pipeline"
-def commonSteps = load "common/common.groovy"
+def commonSteps = load "../infrastructure/dsl/pipeline_job/common/common.groovy"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
