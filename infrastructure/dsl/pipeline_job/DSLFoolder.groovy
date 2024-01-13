@@ -1,6 +1,3 @@
-import com.syssim.utils.Constants
-import com.syssim.utils.CommonSteps
-
 void createAllDirectories(String path) {
     String[] directories = path.split('/')
     String currentPath = ""
