@@ -16,8 +16,6 @@ pipeline {
         stage('Create or Update Jobs and Folders') {
             steps {
                 script {
-
-
                     final Map additionalParams = [
                                 disableAllJobs: env.JOB_NAME.contains('/'),
                                 default_ci_repo: params.default_ci_repo
@@ -26,7 +24,7 @@ pipeline {
                     jobDsl(additionalClasspath: 'src/',
                         lookupStrategy: 'SEED_JOB',                        
                         // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
-                        targets: ['infrastructure/jenkins/dsl/pipelinejob/DSL*.groovy'].join('\n'),                
+                        targets: ['infrastructure/jenkins/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
                         removedJobAction: 'DELETE', // Action to take on removed jobs
                         // ignoreExisting: true, // Update existing jobs without recreating                            
                         additionalParameters: additionalParams)
