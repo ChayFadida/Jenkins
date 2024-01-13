@@ -1,5 +1,3 @@
-@Library('keiko-jenkins-shared-library@main') _
-
 pipeline {
     agent {
         label 'keiko'
