@@ -26,7 +26,7 @@ pipeline {
                         targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
                         removedJobAction: 'DELETE', // Action to take on removed jobs
                         // ignoreExisting: true, // Update existing jobs without recreating                            
-                        sandbox: true,            // Use Groovy sandbox
+                        //sandbox: true,            // Use Groovy sandbox
                         additionalParameters: additionalParams)
                     println "Done processing DSL scripts"    
                                         
