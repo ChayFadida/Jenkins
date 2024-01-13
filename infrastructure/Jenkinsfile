@@ -1,0 +1,44 @@
+@Library('keiko-jenkins-shared-library@main') _
+
+pipeline {
+    agent {
+        label 'keiko'
+    }
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+        }
+
+        stage('Create or Update Jobs and Folders') {
+            steps {
+                script {
+
+
+                    final Map additionalParams = [
+                                disableAllJobs: env.JOB_NAME.contains('/'),
+                                default_ci_repo: params.default_ci_repo
+                            ]
+
+                    jobDsl(additionalClasspath: 'src/',
+                        lookupStrategy: 'SEED_JOB',                        
+                        // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
+                        targets: ['jenkins/dsl/pipelinejob/DSL*.groovy'].join('\n'),                
+                        removedJobAction: 'DELETE', // Action to take on removed jobs
+                        // ignoreExisting: true, // Update existing jobs without recreating                            
+                        additionalParameters: additionalParams)
+                    println "Done processing DSL scripts"
+                                        
+                }
+            }
+        }
+    }
+}
+
