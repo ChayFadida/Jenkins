@@ -25,7 +25,6 @@ pipeline {
                         // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
                         targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
                         removedJobAction: 'DELETE', // Action to take on removed jobs
-                        sandbox: true,            // Use Groovy sandbox
                         additionalParameters: additionalParams)
                     println "Done processing DSL scripts"    
                                         
