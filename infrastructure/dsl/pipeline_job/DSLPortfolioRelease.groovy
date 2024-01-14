@@ -1,10 +1,9 @@
-
 def JOB_NAME = "pipelines/alignIp"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
 
-    job.definition {
+    definition {
         cpsScm {                
             scm {
                 git {
@@ -16,5 +15,4 @@ pipelineJob(JOB_NAME) {
             }
         }
     }
-    
 }
