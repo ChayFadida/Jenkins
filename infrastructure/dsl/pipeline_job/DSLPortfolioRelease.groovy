@@ -14,6 +14,6 @@ pipelineJob(JOB_NAME) {
                 }
             }
         }
-        scriptPath( "jenkins/infrastructure/pipelines/alignIp/JenkinsfileAlignIp.groovy")
+        scriptPath("infrastructure/pipelines/alignIp/JenkinsfileAlignIp.groovy")
     }
 }
