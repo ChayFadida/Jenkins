@@ -19,15 +19,15 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Cleanup: Stop and remove the Docker container
-            script {
-                def containerName = 'your-container-name'
+    // post {
+    //     always {
+    //         // Cleanup: Stop and remove the Docker container
+    //         script {
+    //             def containerName = 'your-container-name'
                 
-                sh "docker stop $containerName || true"
-                sh "docker rm $containerName || true"
-            }
-        }
-    }
+    //             sh "docker stop $containerName || true"
+    //             sh "docker rm $containerName || true"
+    //         }
+    //     }
+    // }
 }
