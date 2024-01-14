@@ -4,16 +4,6 @@ def JOB_NAME = "pipelines/alignIp"
 pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
 
-    properties {
-        buildDiscarderProperty {
-            strategy {
-                logRotator {
-                    daysToKeepStr("5")
-                }
-            }
-        }
-    }
-
     cpsScm {
         scm {
             git {
