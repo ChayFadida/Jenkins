@@ -9,30 +9,39 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                cleanWs()
-                checkout scm
-            }
-        }
-
-        stage('Create or Update Jobs and Folders') {
+        stage('Run Hello World Container') {
             steps {
                 script {
-                    final Map additionalParams = [
-                                disableAllJobs: env.JOB_NAME.contains('/'),
-                                default_ci_repo: params.default_ci_repo
-                            ]
-                    jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
-                        lookupStrategy: 'SEED_JOB',                        
-                        // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
-                        targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
-                        removedJobAction: 'DELETE', // Action to take on removed jobs
-                        additionalParameters: additionalParams)
-                    println "Done processing DSL scripts"    
-                                        
+                    docker.image('hello-world').inside {
+                        sh 'echo "Hello from the Hello World container!"'
+                    }
                 }
             }
         }
+        // stage('Checkout') {
+        //     steps {
+        //         cleanWs()
+        //         checkout scm
+        //     }
+        // }
+
+        // stage('Create or Update Jobs and Folders') {
+        //     steps {
+        //         script {
+        //             final Map additionalParams = [
+        //                         disableAllJobs: env.JOB_NAME.contains('/'),
+        //                         default_ci_repo: params.default_ci_repo
+        //                     ]
+        //             jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
+        //                 lookupStrategy: 'SEED_JOB',                        
+        //                 // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
+        //                 targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
+        //                 removedJobAction: 'DELETE', // Action to take on removed jobs
+        //                 additionalParameters: additionalParams)
+        //             println "Done processing DSL scripts"    
+                                        
+        //         }
+        //     }
+        // }
     }
 }
