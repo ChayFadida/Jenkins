@@ -9,13 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('Run Hello World Container') {
-            steps {
-                script {
-                    docker.image('hello-world').run()
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 cleanWs()
