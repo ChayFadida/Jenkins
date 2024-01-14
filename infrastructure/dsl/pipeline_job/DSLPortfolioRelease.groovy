@@ -8,7 +8,7 @@ pipelineJob(JOB_NAME) {
         buildDiscarderProperty {
             strategy {
                 logRotator {
-                    numToKeep(10)  // Number of builds to keep
+                    daysToKeepStr("5")
                 }
             }
         }
