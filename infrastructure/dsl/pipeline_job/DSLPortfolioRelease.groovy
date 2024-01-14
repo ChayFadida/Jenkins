@@ -1,4 +1,4 @@
-import infrastructure/dsl/pipeline_job/common/common
+import infrastructure.dsl.pipeline_job.common.common
 
 def JOB_NAME = "pipelines/Keiko-Funcsim-Pipeline"
 
@@ -20,5 +20,5 @@ pipelineJob(JOB_NAME) {
     // CommonSteps.applyKeikoPullRequestTrigger(delegate)   
 
     // Pipeline definition
-    common.applyCpsScm(delegate, Constants.SCM_URL_KEIKO_JOB_DSL_REPO, Constants.SCM_CREDENTIAL_ID_KEIKO_REPO, branch_name, "jenkins/pipelines/Syssim/Funcsim/Jenkinsfile.KeikoFuncsimPipeline")
+    common.applyCpsScm(delegate, "bla", "bla", "bla", "jenkins/pipelines/Syssim/Funcsim/Jenkinsfile.KeikoFuncsimPipeline")
 }
