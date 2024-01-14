@@ -1,4 +1,4 @@
-import infrastructure.dsl.pipeline_job.common.common
+import common.common
 
 def JOB_NAME = "pipelines/Keiko-Funcsim-Pipeline"
 
