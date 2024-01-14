@@ -2,11 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('CheckOut SRC'){
-            checkout scmGit(
-                branches: [[name: 'master']],
-                extensions: [ cloneOption(shallow: true) ],
-                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Utils.git']])
+        stage('CheckOut SRC') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: 'master']],
+                              extensions: [[$class: 'CloneOption', shallow: true]],
+                              userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Utils.git']]])
+                }
+            }
         }
     }
 
