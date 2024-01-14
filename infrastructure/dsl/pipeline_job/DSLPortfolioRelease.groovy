@@ -7,7 +7,7 @@ pipelineJob(JOB_NAME) {
         cpsScm {
             scm {
                 git {
-                    branch 'chay/seedall' // Replace with your branch name
+                    branch branchName // Replace with your branch name
                     remote {
                         url 'https://github.com/ChayFadida/Jenkins.git' // Replace with your Git repository URL
                     }
