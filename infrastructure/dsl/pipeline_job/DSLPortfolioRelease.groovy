@@ -9,14 +9,6 @@ pipelineJob(JOB_NAME) {
                 git {
                     branch 'master' // Replace with your branch name
                     remote {
-                        url 'https://github.com/ChayFadida/Utils.git' // Replace with your Git repository URL
-                    }
-                }
-            }
-            scm {
-                git {
-                    branch 'master' // Replace with your branch name
-                    remote {
                         url 'https://github.com/ChayFadida/Jenkins.git' // Replace with your Git repository URL
                     }
                 }
