@@ -12,9 +12,7 @@ pipeline {
         stage('Run Hello World Container') {
             steps {
                 script {
-                    docker.image('hello-world').inside {
-                        sh 'echo "Hello from the Hello World container!"'
-                    }
+                    docker.image('hello-world').run()
                 }
             }
         }
