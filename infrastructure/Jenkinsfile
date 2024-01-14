@@ -1,7 +1,8 @@
 pipeline {
-    kubernetes {
-        label 'jenkins-jenkins-agent'
-    }
+    agent {
+        kubernetes {
+            label 'jenkins-jenkins-agent'
+        }
     }
     options {
         skipDefaultCheckout(true)
