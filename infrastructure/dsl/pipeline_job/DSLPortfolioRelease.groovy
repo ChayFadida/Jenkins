@@ -1,12 +1,10 @@
-import common.common
 
-def JOB_NAME = "pipelines/Keiko-Funcsim-Pipeline"
+def JOB_NAME = "pipelines/alignIp"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
 
     properties {
-        githubProjectUrl("https://github.com/ChayFadida/Portfolio.git")
         buildDiscarderProperty {
             strategy {
                 logRotator {
@@ -16,9 +14,16 @@ pipelineJob(JOB_NAME) {
         }
     }
 
-    // Pipeline triggers
-    // CommonSteps.applyKeikoPullRequestTrigger(delegate)   
-
-    // Pipeline definition
-    common.applyCpsScm(delegate, "bla", "bla", "bla", "jenkins/pipelines/Syssim/Funcsim/Jenkinsfile.KeikoFuncsimPipeline")
+    cpsScm {
+        scm {
+            git {
+                branch 'master' // Replace with your branch name
+                remote {
+                    url 'https://github.com/ChayFadida/Utils.git' // Replace with your Git repository URL
+                }
+            }
+        }
+    }
+    
+    
 }
