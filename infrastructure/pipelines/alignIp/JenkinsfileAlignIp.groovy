@@ -13,6 +13,7 @@ pipeline {
                               branches: [[name: 'master']],
                               extensions: [[$class: 'CloneOption', shallow: true]],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Utils.git']]])
+                    sh "docker --version"
                 }
             }
         }
