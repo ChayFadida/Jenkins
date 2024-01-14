@@ -1,3 +1,5 @@
+package common
+
 class CommonSteps {
     static void applyCpsScm(job, String scmUrl, String credentialsId, String branchName, String scriptFilePath) {
         job.definition {
