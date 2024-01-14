@@ -4,7 +4,7 @@ pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
 
     definition {
-        cpsScm {                
+        cpsScm {
             scm {
                 git {
                     branch 'master' // Replace with your branch name
@@ -13,7 +13,7 @@ pipelineJob(JOB_NAME) {
                     }
                 }
             }
+            scriptPath "infrastructure/pipelines/alignIp/JenkinsfileAlignIp.groovy"
         }
-        scriptPath("infrastructure/pipelines/alignIp/JenkinsfileAlignIp.groovy")
     }
 }
