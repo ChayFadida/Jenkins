@@ -1,6 +1,9 @@
 pipeline {
-    agent any
-    
+    agent {
+        kubernetes {
+            label 'jenkins-jenkins-agent'
+        }
+    }
     stages {
         stage('Checkout') {
             steps {
