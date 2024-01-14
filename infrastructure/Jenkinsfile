@@ -1,7 +1,9 @@
 pipeline {
-    agent any
+    kubernetes {
+        label 'jenkins-jenkins-agent'
+    }
+    }
     options {
-        // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }
 
