@@ -8,29 +8,6 @@ pipeline {
                 extensions: [ cloneOption(shallow: true) ],
                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Utils.git']])
         }
-        
-        // stage('Build Image') {
-        //     steps {
-        //         script {
-        //             def imageName = 'your-docker-image-name'
-        //             def dockerfile = 'Dockerfile' // Replace with your actual Dockerfile name
-
-        //             // Build Docker image
-        //             sh "docker build -t $imageName -f $dockerfile ."
-        //         }
-        //     }
-        // }
-
-        // stage('Run Container') {
-        //     steps {
-        //         script {
-        //             def containerName = 'your-container-name'
-                    
-        //             // Run Docker container
-        //             sh "docker run --name $containerName -d $imageName"
-        //         }
-        //     }
-        // }
     }
 
     post {
