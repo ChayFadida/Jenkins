@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            // Define the label that matches the pod template in your Kubernetes cloud configuration
+            label 'jenkins-jenkins-agent'
+        }
+    }
 
     stages {
         stage('CheckOut SRC') {
