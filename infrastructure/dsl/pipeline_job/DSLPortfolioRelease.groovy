@@ -4,10 +4,10 @@ pipelineJob(JOB_NAME) {
     description 'Portfolio Release Pipeline'
 
     parameters {
-        stringParam(name: 'DOCKER_REGISTRY', defaultValue: 'harbor.chay-techs.com', description: 'Docker registry URL')
-        stringParam(name: 'APP_NAME', defaultValue: 'portfolio-front', description: 'Name of your application')
-        stringParam(name: 'NAMESPACE', defaultValue: 'chay-techs-production', description: 'Kubernetes namespace')
-        stringParam(name: 'IMAGE_TAG', description: 'Docker image tag')
+        stringParam('DOCKER_REGISTRY', 'harbor.chay-techs.com', 'Docker registry URL')
+        stringParam('APP_NAME', 'portfolio-front', 'Name of your application')
+        stringParam('NAMESPACE', 'chay-techs-production', 'Kubernetes namespace')
+        stringParam('IMAGE_TAG', '', 'Docker image tag')
     }
 
     definition {
