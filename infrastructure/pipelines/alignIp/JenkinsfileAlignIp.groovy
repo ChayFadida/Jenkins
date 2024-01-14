@@ -4,30 +4,29 @@ pipeline {
             label 'jenkins-jenkins-agent'
         }
     }
-
+    environment {
+        EMAIL_CREDENTIAL = credentials('EMAIL_CREDENTIAL')
+        API_KEY_CREDENTIAL = credentials('API_KEY_CREDENTIAL')
+        ZONE_IDENTIFIER_CREDENTIAL = credentials('ZONE_IDENTIFIER_CREDENTIAL')
+    }
     stages {
-        stage('CheckOut SRC') {
+        stage('Checkout Source Code') {
             steps {
                 script {
-                    checkout([$class: 'GitSCM', 
+                    checkout([$class: 'GitSCM',
                               branches: [[name: 'master']],
-                              extensions: [[$class: 'CloneOption', shallow: true]],
+                              doGenerateSubmoduleConfigurations: false,
+                              extensions: [],
+                              submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Utils.git']]])
-                    sh "docker --version"
                 }
             }
         }
+        stage('Run Script') {
+            steps {
+                sh 'chmod +x ./change_domains_ip.sh' // Make the script executable
+                sh "./change_domains_ip.sh '${EMAIL_CREDENTIAL}' '${API_KEY_CREDENTIAL}' '${ZONE_IDENTIFIER_CREDENTIAL}' 'chay-techs.com jenkins.chay-techs.com harbor.chay-techs.com grafana.chay-techs.com kibana.chay-techs.com prometheus.chay-techs.com studforstud.chay-techs.com'" // Run the script with credentials
+            }
+        }
     }
-
-    // post {
-    //     always {
-    //         // Cleanup: Stop and remove the Docker container
-    //         script {
-    //             def containerName = 'your-container-name'
-                
-    //             sh "docker stop $containerName || true"
-    //             sh "docker rm $containerName || true"
-    //         }
-    //     }
-    // }
 }
