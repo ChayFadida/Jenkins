@@ -15,31 +15,24 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Run Docker Image') {
+
+        stage('Create or Update Jobs and Folders') {
             steps {
                 script {
-                    sh 'groups jenkins'
-                    docker.image("hello-world").run()
+                    final Map additionalParams = [
+                                disableAllJobs: env.JOB_NAME.contains('/'),
+                                default_ci_repo: params.default_ci_repo
+                            ]
+                    jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
+                        lookupStrategy: 'SEED_JOB',                        
+                        // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
+                        targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
+                        removedJobAction: 'DELETE', // Action to take on removed jobs
+                        additionalParameters: additionalParams)
+                    println "Done processing DSL scripts"    
+                                        
                 }
             }
         }
-        // stage('Create or Update Jobs and Folders') {
-        //     steps {
-        //         script {
-        //             final Map additionalParams = [
-        //                         disableAllJobs: env.JOB_NAME.contains('/'),
-        //                         default_ci_repo: params.default_ci_repo
-        //                     ]
-        //             jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
-        //                 lookupStrategy: 'SEED_JOB',                        
-        //                 // targets: ['jenkins/dsl/jobs/**/*.groovy'].join('\n'),                
-        //                 targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
-        //                 removedJobAction: 'DELETE', // Action to take on removed jobs
-        //                 additionalParameters: additionalParams)
-        //             println "Done processing DSL scripts"    
-                                        
-        //         }
-        //     }
-        // }
     }
 }
