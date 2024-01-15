@@ -11,21 +11,21 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    def dockerImage = docker.build("${params.DOCKER_REGISTRY}/${params.APP_NAME}:${params.IMAGE_TAG}")
-                    docker.withRegistry("${params.DOCKER_REGISTRY}", 'chay-techs-registry-key') {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+        // stage('Build and Push Docker Image') {
+        //     steps {
+        //         script {
+        //             def dockerImage = docker.build("${params.DOCKER_REGISTRY}/${params.APP_NAME}:${params.IMAGE_TAG}")
+        //             docker.withRegistry("${params.DOCKER_REGISTRY}", 'chay-techs-registry-key') {
+        //                 dockerImage.push()
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Update Deployment') {
             steps {
                 script {
-                    sh "kubectl set image deployment/${params.APP_NAME} ${params.APP_NAME}=${params.DOCKER_REGISTRY}/${params.APP_NAME}:${params.IMAGE_TAG} -n ${params.NAMESPACE}"
+                    sh "kubectl get pod"
                 }
             }
         }
