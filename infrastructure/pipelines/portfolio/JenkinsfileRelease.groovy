@@ -20,13 +20,13 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'REACT_APP_EMAILJS_SERVICE_ID', variable: 'REACT_APP_EMAILJS_SERVICE_ID'),
-                                     string(credentialsId: 'REACT_APP_EMAILJS_TEMPLATE_ID', variable: 'REACT_APP_EMAILJS_TEMPLATE_ID'),
-                                     string(credentialsId: 'REACT_APP_EMAILJS_USER_ID', variable: 'REACT_APP_EMAILJS_USER_ID')]) {
+                    // withCredentials([string(credentialsId: 'REACT_APP_EMAILJS_SERVICE_ID', variable: 'REACT_APP_EMAILJS_SERVICE_ID'),
+                    //                  string(credentialsId: 'REACT_APP_EMAILJS_TEMPLATE_ID', variable: 'REACT_APP_EMAILJS_TEMPLATE_ID'),
+                    //                  string(credentialsId: 'REACT_APP_EMAILJS_USER_ID', variable: 'REACT_APP_EMAILJS_USER_ID')]) {
                         sh "docker build -t harbor.chay-techs.com/portfolio/portfolio-front:testim -f Dockerfile.portfolio ."
                         // sh "docker login -u your_docker_username -p your_docker_password"
                         // sh "docker push harbor.chay-techs.com/portfolio/portfolio-front:testim"
-                    }
+                    //}
                 }
             }
         }
