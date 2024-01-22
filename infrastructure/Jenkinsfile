@@ -15,7 +15,7 @@ pipeline {
                 checkout scm
             }
         }
-        
+    
   
         stage('Create or Update Jobs and Folders') {
             steps {
