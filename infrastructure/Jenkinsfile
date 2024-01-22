@@ -16,7 +16,6 @@ pipeline {
             }
         }
         
-
         stage('Create or Update Jobs and Folders') {
             steps {
                 script {
