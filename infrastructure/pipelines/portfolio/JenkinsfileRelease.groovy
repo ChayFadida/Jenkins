@@ -20,7 +20,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry(credentialsId: 'harbor-pull-secret', registry: DOCKER_REGISTRY) {
+                    docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
                         def docker_image = docker.build("harbor.chay-techs.com/portfolio/portfolio-front:testim", "-f Dockerfile.portfolio .")
                         dockerImage.push()
                         docker_image.remove()
