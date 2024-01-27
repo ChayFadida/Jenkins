@@ -20,7 +20,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    sh "docker build -t harbor.chay-techs.com/portfolio/portfolio-front:testim -f Dockerfile.portfolio ."
+                    docker.build(tag="harbor.chay-techs.com/portfolio/portfolio-front:testim", dockerfile="Dockerfile.portfolio .")
                 }
             }
         }
