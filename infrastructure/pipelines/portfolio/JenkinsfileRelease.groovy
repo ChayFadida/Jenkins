@@ -23,7 +23,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'PORTFOLIO_REACT_APP_EMAILJS_SERVICE_ID', variable: 'REACT_APP_EMAILJS_SERVICE_ID'),
                                      string(credentialsId: 'PORTFOLIO_REACT_APP_EMAILJS_TEMPLATE_ID', variable: 'REACT_APP_EMAILJS_TEMPLATE_ID'),
                                      string(credentialsId: 'PORTFOLIO_REACT_APP_EMAILJS_USER_ID', variable: 'REACT_APP_EMAILJS_USER_ID')]) {
-                        docker.build("Dockerfile.portfolio", "-t harbor.chay-techs.com/portfolio/portfolio-front:testim")
+                        docker.build(path=".", tag="harbor.chay-techs.com/portfolio/portfolio-front:testim", dockerfile="Dockerfile.portfolio")
                     }
                 }
             }
