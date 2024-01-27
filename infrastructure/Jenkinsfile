@@ -27,6 +27,7 @@ pipeline {
                     jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
                         lookupStrategy: 'SEED_JOB',                        
                         targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),
+                        sandbox: true,           
                         removedJobAction: 'DELETE', // Action to take on removed jobs
                         additionalParameters: additionalParams)
                     println "Done processing DSL scripts"    
