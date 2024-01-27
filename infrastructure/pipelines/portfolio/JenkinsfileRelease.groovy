@@ -21,7 +21,8 @@ pipeline {
             steps {
                 script {
                     sh "ls"
-                    docker.build(tag="harbor.chay-techs.com/portfolio/portfolio-front:testim", dockerfile="./Dockerfile.portfolio")
+
+                    docker.build(tag="harbor.chay-techs.com/portfolio/portfolio-front:testim", dockerfile="${WORKSPACE}/Dockerfile.portfolio")
                 }
             }
         }
