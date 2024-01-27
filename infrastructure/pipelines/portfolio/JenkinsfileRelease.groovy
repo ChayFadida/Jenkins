@@ -23,7 +23,7 @@ pipeline {
                     docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
                         def docker_image = docker.build("harbor.chay-techs.com/portfolio/portfolio-front:testim", "-f Dockerfile.portfolio .")
                         docker_image.push()
-                        docker_image.remove()
+                        sh "docker rmi ${image.id}"
                     }
                 }
             }
