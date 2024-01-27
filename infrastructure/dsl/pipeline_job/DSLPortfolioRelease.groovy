@@ -10,6 +10,11 @@ pipelineJob(JOB_NAME) {
         stringParam('IMAGE_TAG', '', 'Docker image tag')
     }
 
+    environment {
+        DOCKER_IMAGE = 'harbor.chay-techs.com/portfolio/portfolio-front:testim'
+        DOCKERFILE_PATH = 'Dockerfile.portfolio'
+    }
+    
     definition {
         cpsScm {
             scm {
