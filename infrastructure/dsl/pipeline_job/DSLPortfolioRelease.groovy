@@ -9,11 +9,6 @@ pipelineJob(JOB_NAME) {
         stringParam('NAMESPACE', 'chay-techs-production', 'Kubernetes namespace')
         stringParam('IMAGE_TAG', '', 'Docker image tag')
     }
-
-    environment {
-        DOCKER_IMAGE = 'harbor.chay-techs.com/portfolio/portfolio-front:testim'
-        DOCKERFILE_PATH = 'Dockerfile.portfolio'
-    }
     
     definition {
         cpsScm {
