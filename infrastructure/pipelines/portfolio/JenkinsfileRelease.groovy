@@ -20,7 +20,10 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    docker.build("harbor.chay-techs.com/portfolio/portfolio-front:testim", "Dockerfile.portfolio .")
+                    docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
+                        def docker_image = docker.build("harbor.chay-techs.com/portfolio/portfolio-front:testim", "-f Dockerfile.portfolio .")
+                        dockerImage.push()
+                    }
                 }
             }
         }
