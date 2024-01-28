@@ -2,7 +2,7 @@ def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
-    if(branch_name == 'chay/placeholder'){
+    if(branchName == 'chay/placeholder'){
         triggers {
             genericTrigger {
                 regexpFilterExpression('chay/placeholder')
