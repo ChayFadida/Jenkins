@@ -6,7 +6,7 @@ pipelineJob(JOB_NAME) {
         genericTrigger {
             genericVariables {
                 genericVariable {
-                    regexpFilter("^(refs/heads/chay/placeholder)$")
+                    regexpFilter("^(refs/heads/chay/placeholder)")
                 }
             }
             token('PORTFOLIO-CI')
