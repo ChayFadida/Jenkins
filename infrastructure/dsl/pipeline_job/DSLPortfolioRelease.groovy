@@ -8,8 +8,6 @@ pipelineJob(JOB_NAME) {
                 genericVariable {
                     key("portfolio_branch")
                     value("\$.ref")
-                    regexpFilter("refs\\/heads\\/(.*)")  // Apply the regular expression here
-                    defaultValue("")
                 }
             }
             regexpFilterText("\$.ref == 'refs/heads/chay/kubernetes'")
