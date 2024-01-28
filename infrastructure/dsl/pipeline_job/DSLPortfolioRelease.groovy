@@ -4,7 +4,7 @@ pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
      triggers {
         genericTrigger {
-            regexpFilterExpression("^(refs/heads/chay/placeholder)")
+            regexpFilterText("\$.branch == 'chay/placeholder'")
             token('PORTFOLIO-CI')
         }
     }
