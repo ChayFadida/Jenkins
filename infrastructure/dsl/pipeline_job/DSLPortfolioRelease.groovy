@@ -2,6 +2,11 @@ def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
+     triggers {
+        genericTrigger {
+            token('PORTFOLIO-CI')
+        }
+    }
     environmentVariables {
         env('DOCKER_REGISTRY', 'https://harbor.chay-techs.com')
     }
