@@ -8,7 +8,7 @@ pipelineJob(JOB_NAME) {
     
     definition {
         cpsScm {
-            scm { 
+            scm {
                 git {
                     branch "chay/portfolio_release"
                     remote {
