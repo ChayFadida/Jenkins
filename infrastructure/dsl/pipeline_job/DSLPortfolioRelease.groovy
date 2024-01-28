@@ -2,10 +2,12 @@ def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
-     triggers {
-        genericTrigger {
-            regexpFilterText("\$.branch == 'chay/placeholder'")
-            token('PORTFOLIO-CI')
+    if(branch_name == 'chay/placeholder'){
+        triggers {
+            genericTrigger {
+                regexpFilterExpression('chay/placeholder')
+                token('PORTFOLIO-CI')
+            }
         }
     }
     environmentVariables {
