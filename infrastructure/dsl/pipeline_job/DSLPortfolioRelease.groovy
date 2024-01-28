@@ -1,7 +1,7 @@
-def JOB_NAME = "pipelines/portfolioRelease"
+def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
-    description 'Portfolio Release Pipeline'
+    description 'Portfolio CI Pipeline'
     environmentVariables {
         env('DOCKER_REGISTRY', 'https://harbor.chay-techs.com')
     }
