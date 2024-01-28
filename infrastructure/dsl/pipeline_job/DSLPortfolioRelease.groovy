@@ -2,14 +2,21 @@ def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
-    if(branchName == 'chay/placeholder'){
-        triggers {
-            genericTrigger {
-                regexpFilterExpression('chay/placeholder')
-                token('PORTFOLIO-CI')
+    triggers {
+        genericTrigger {
+            genericVariables {
+                genericVariable {
+                    key("portfolio_branch")
+                    value("\$.ref")
+                    regexpFilter("refs/heads/(.*)")  // Apply the regular expression here
+                    defaultValue("")
+                    regexpFilterText("\$.portfolio_branch == 'chay/kubernetes'")
+                }
             }
+            token('PORTFOLIO-CI')
         }
     }
+
     environmentVariables {
         env('DOCKER_REGISTRY', 'https://harbor.chay-techs.com')
     }
@@ -18,7 +25,7 @@ pipelineJob(JOB_NAME) {
         cpsScm {
             scm {
                 git {
-                    branch "chay/portfolio_release"
+                    branch branchName
                     remote {
                         url 'https://github.com/ChayFadida/Jenkins.git'
                     }
