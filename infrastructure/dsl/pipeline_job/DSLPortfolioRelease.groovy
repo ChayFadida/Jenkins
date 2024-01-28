@@ -10,7 +10,7 @@ pipelineJob(JOB_NAME) {
                     value("\$.ref")
                     regexpFilter("refs/heads/(.*)")  // Apply the regular expression here
                     defaultValue("")
-                    regexpFilterText("${portfolio_branch} == 'chay/kubernetes'")
+                    regexpFilterText("\$.ref == 'refs/heads/chay/kubernetes'")
                 }
             }
             printContributedVariables(true)
