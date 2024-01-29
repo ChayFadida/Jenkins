@@ -11,7 +11,7 @@ pipelineJob(JOB_NAME) {
                 }
             }
             regexpFilterText("\$portfolio_branch")
-            regexpFilterExpression("^(refs\\/heads\\/chay\\/fakeMaster|refs\\/heads\\/chay\\/fakeDevelop)*?\$")
+            regexpFilterExpression("^(refs\\/heads\\/chay\\/(fakeMaster|fakeDevelop))*?\$")
             printContributedVariables(true)
             printPostContent(true)
             token('PORTFOLIO-CI')
