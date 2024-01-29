@@ -9,7 +9,7 @@ pipeline {
             steps {
                 script {
                     checkout([$class: 'GitSCM',
-                              branches: [[name: 'master']],
+                              branches: [[name: portfolio_branch]],
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
@@ -20,8 +20,9 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
+                    commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
-                        def docker_image = docker.build("harbor.chay-techs.com/portfolio/portfolio-front:testim", "-f Dockerfile.portfolio .")
+                        def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:_${commitHash}", "-f Dockerfile.portfolio .")
                         docker_image.push()
                         sh "docker rmi ${docker_image.id}"
                     }
