@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    echo "this is the branch ${scm.branches[0].name}"
                     def tag = "${currentBranch}_${commitHash}"
                     docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
                         def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${tag}", "-f Dockerfile.portfolio .")
