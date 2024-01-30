@@ -40,7 +40,7 @@ pipeline {
             }
         }
         
-        stage('Update Deployment') {
+        stage('Checkout Deployment Source Code') {
             steps {
                 dir('portfolio-cd') {
                     script {
