@@ -5,13 +5,12 @@ pipeline {
         }
     }
     environment {
-        // Define a variable to store the checked-out branch name
         CHECKED_OUT_BRANCH = ''
     }
     stages {
         stage('Checkout Source Code') {
             steps {
-                cleanWS()
+                cleanWs()
                 script {
                     CHECKED_OUT_BRANCH = checkout([$class: 'GitSCM',
                               branches: [[name: portfolio_branch]],
