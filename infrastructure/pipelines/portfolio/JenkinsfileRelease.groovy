@@ -49,8 +49,29 @@ pipeline {
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
-                        CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH.split('/')[-1]
                     }
+                }
+            }
+        }
+    }
+
+    stage('Update Deployment') {
+        steps {
+            dir('portfolio-cd') {
+                script {
+                    // Read the Deployment YAML file
+                    def deploymentYaml = readFile('deployment.yml')
+
+                    // Update the image tag in the Deployment YAML
+                    deploymentYaml = deploymentYaml.replaceAll(/image: harbor.chay-techs.com\/portfolio\/portfolio-front:.*$/, "image: harbor.chay-techs.com/portfolio/portfolio-front:${tag}")
+
+                    // Write the modified Deployment YAML back to the file
+                    writeFile(file: 'deployment.yml', text: deploymentYaml)
+
+                    // Commit and push the changes to the ArgoCD Git repository
+                    sh 'git add .'
+                    sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                    sh "git push origin ${CHECKED_OUT_BRANCH}"
                 }
             }
         }
