@@ -17,7 +17,7 @@ pipeline {
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
-                    CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH
+                    CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH.split('/')[-1]
                 }
             }
         }
