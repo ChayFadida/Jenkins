@@ -17,7 +17,7 @@ pipeline {
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
-                    echo "Checked out branch: ${gitInfo.GIT_BRANCH}"
+                    CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH
                 }
             }
         }
@@ -26,8 +26,7 @@ pipeline {
             steps {
                 script {
                     def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    echo "this is the branch ${scm.branches[0].name}"
-                    def tag = "${currentBranch}_${commitHash}"
+                    def tag = "${CHECKED_OUT_BRANCH}_${commitHash}"
                     docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
                         def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${tag}", "-f Dockerfile.portfolio .")
                         docker_image.push()
