@@ -44,8 +44,9 @@ pipeline {
             steps {
                 dir('portfolio-cd') {
                     script {
+                        def x = portfolio_branch.split('/')[-1]
                         gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: portfolio_branch.split('/')[-1]]],
+                                branches: [[name: "refs/remotes/origin/${x}", localBranch: x]],
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
