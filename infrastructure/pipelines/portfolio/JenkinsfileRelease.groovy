@@ -58,27 +58,28 @@ pipeline {
             steps {
                 dir('portfolio-cd') {
                     script {
-                        // Define the path to the Deployment YAML file based on the branch/environment
-                        def deploymentPath = "environments/${CHECKED_OUT_BRANCH}/deployment.yml"
-
-                        // Read the Deployment YAML file
-                        def deploymentYaml = readFile(deploymentPath)
-
-                        // Update the image tag in the Deployment YAML
-                        deploymentYaml = deploymentYaml.replaceAll("image: harbor.chay-techs.com\\/portfolio\\/portfolio-front:+([\\w\\.\\-\\/:@]+)", "niceee")
-
-                        // Write the modified Deployment YAML back to the file
-                        writeFile(file: deploymentPath, text: deploymentYaml)
-
-                        // Commit and push the changes to the ArgoCD Git repository
-                        sh """
-                          git config --global user.email "you@example.com"
-                            git config --global user.name "Your Name"
-                        """
                         dir("PortfolioCD") {
-                            sh "git add ${deploymentPath}"
-                            sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push"
+                            // Define the path to the Deployment YAML file based on the branch/environment
+                            def deploymentPath = "environments/${CHECKED_OUT_BRANCH}/deployment.yml"
+
+                            // Read the Deployment YAML file
+                            def deploymentYaml = readFile(deploymentPath)
+
+                            // Update the image tag in the Deployment YAML
+                            deploymentYaml = deploymentYaml.replaceAll("image: harbor.chay-techs.com\\/portfolio\\/portfolio-front:+([\\w\\.\\-\\/:@]+)", "niceee")
+
+                            // Write the modified Deployment YAML back to the file
+                            writeFile(file: deploymentPath, text: deploymentYaml)
+
+                            // Commit and push the changes to the ArgoCD Git repository
+                            sh """
+                            git config --global user.email "you@example.com"
+                                git config --global user.name "Your Name"
+                            """
+                            
+                                sh "git add ${deploymentPath}"
+                                sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                                sh "git push"
                         }
                     }
                 }
