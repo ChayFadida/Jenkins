@@ -72,11 +72,10 @@ pipeline {
                     writeFile(file: deploymentPath, text: deploymentYaml)
 
                     // Commit and push the changes to the ArgoCD Git repository
-                    dir('portfolio-cd') {
-                        sh "git add ${deploymentPath}"
-                        sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                        sh "git push origin ${CHECKED_OUT_BRANCH}"
-                    }
+                    sh "git add ${deploymentPath}"
+                    sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                    sh "git push origin ${CHECKED_OUT_BRANCH}"
+                
                 }
             }
         }
