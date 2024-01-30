@@ -12,12 +12,12 @@ pipeline {
             steps {
                 cleanWs()
                 script {
-                    CHECKED_OUT_BRANCH = checkout([$class: 'GitSCM',
+                    gitInfo = checkout([$class: 'GitSCM',
                               branches: [[name: portfolio_branch]],
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
-                    echo "Checked out branch: ${CHECKED_OUT_BRANCH}"
+                    echo "Checked out branch: ${gitInfo.GIT_BRANCH}"
                 }
             }
         }
