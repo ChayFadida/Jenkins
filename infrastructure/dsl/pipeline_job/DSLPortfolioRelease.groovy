@@ -19,7 +19,7 @@ pipelineJob(JOB_NAME) {
     }
 
     environmentVariables {
-        env('DOCKER_REGISTRY', 'https://harbor.chay-techs.com')
+        env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
     }
     
     definition {

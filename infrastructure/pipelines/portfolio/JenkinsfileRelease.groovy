@@ -27,7 +27,7 @@ pipeline {
                 script {
                     def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     def tag = "${CHECKED_OUT_BRANCH}_${commitHash}"
-                    docker.withRegistry(DOCKER_REGISTRY, 'harbor-pull-secret') {
+                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-pull-secret') {
                         def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${tag}", "-f Dockerfile.portfolio .")
                         docker_image.push()
                         sh "docker rmi ${docker_image.id}"
