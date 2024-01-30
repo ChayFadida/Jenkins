@@ -5,14 +5,17 @@ pipeline {
         }
     }
     stages {
+        def checkoOutBranch
         stage('Checkout Source Code') {
             steps {
                 script {
-                    checkout([$class: 'GitSCM',
+                    cleanWS()
+                    checkoOutBranch = checkout([$class: 'GitSCM',
                               branches: [[name: portfolio_branch]],
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
+                    echo "Checked out branch: ${checkoOutBranch}"
                 }
             }
         }
