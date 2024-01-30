@@ -65,7 +65,7 @@ pipeline {
                         def deploymentYaml = readFile(deploymentPath)
 
                         // Update the image tag in the Deployment YAML
-                        deploymentYaml = deploymentYaml.replaceAll(/image: harbor.chay-techs.com\/portfolio\/portfolio-front:.*$/, "image: harbor.chay-techs.com/portfolio/portfolio-front:niceee")
+                        deploymentYaml = deploymentYaml.replaceAll("image: harbor.chay-techs.com\/portfolio\/portfolio-front:+([\w\.\-\/:@]+)", "niceee")
 
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
