@@ -77,7 +77,7 @@ pipeline {
                         """
                         sh "git add ${deploymentPath}"
                         sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                        sh "git pushs"
+                        sh "git push"
                     
                     }
                 }
