@@ -4,18 +4,21 @@ pipeline {
             label 'K8S-With-Docker'
         }
     }
+    environment {
+        // Define a variable to store the checked-out branch name
+        CHECKED_OUT_BRANCH = ''
+    }
     stages {
-        def checkoOutBranch
         stage('Checkout Source Code') {
             steps {
                 script {
                     cleanWS()
-                    checkoOutBranch = checkout([$class: 'GitSCM',
+                    CHECKED_OUT_BRANCH = checkout([$class: 'GitSCM',
                               branches: [[name: portfolio_branch]],
                               extensions: [],
                               submoduleCfg: [],
                               userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
-                    echo "Checked out branch: ${checkoOutBranch}"
+                    echo "Checked out branch: ${CHECKED_OUT_BRANCH}"
                 }
             }
         }
