@@ -44,12 +44,12 @@ pipeline {
             steps {
                 dir('portfolio-cd') {
                     script {
-                        def x = portfolio_branch.split('/')[-1]
                         gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: "refs/remotes/origin/${x}", localBranch: x]],
+                                branches: [[name: CHECKED_OUT_BRANCH]],
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
+                        sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
                 }
             }
@@ -76,7 +76,7 @@ pipeline {
                         git config --global user.email "you@example.com"
                             git config --global user.name "Your Name"
                         """
-                        sh "git branch"
+                        
                         sh "git add ${deploymentPath}"
                         sh 'git commit -m "Update Docker image tag in deployment.yml"'
                         sh "git push"        
