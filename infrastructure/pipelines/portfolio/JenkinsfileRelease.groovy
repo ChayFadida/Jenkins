@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         CHECKED_OUT_BRANCH = ''
+        IMAGE_TAG = ''
     }
     stages {
         stage('Checkout Source Code') {
@@ -40,9 +41,9 @@ pipeline {
                 dir('portfolio-src') {
                     script {
                         def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                        def tag = "${CHECKED_OUT_BRANCH}_${commitHash}"
+                        IMAGE_TAG = "${CHECKED_OUT_BRANCH}_${commitHash}"
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-pull-secret') {
-                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${tag}", "-f Dockerfile.portfolio .")
+                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio .")
                             docker_image.push()
                             sh "docker rmi ${docker_image.id}"
                         }
@@ -62,7 +63,7 @@ pipeline {
                         def deploymentYaml = readFile(deploymentPath)
 
                         // Update the image tag in the Deployment YAML
-                        deploymentYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/portfolio\\/portfolio-front:)\\S+", "niceee")
+                        deploymentYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/portfolio\\/portfolio-front:)\\S+", IMAGE_TAG)
 
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
