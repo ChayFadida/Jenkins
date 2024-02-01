@@ -72,16 +72,10 @@ pipeline {
                         writeFile(file: deploymentPath, text: deploymentYaml)
 
                         // Commit and push the changes to the ArgoCD Git repository
-                        sh """
-                        git config --global user.email "you@example.com"
-                            git config --global user.name "Your Name"
-                        """
-                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-
-                            sh "git add ${deploymentPath}"
-                            sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push"
-                        }
+                        sh "git add ${deploymentPath}"
+                        sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                        sh "git push"
+                        
                     }
                 }
             }
