@@ -47,7 +47,6 @@ pipeline {
                                 branches: [[name: CHECKED_OUT_BRANCH]],
                                 extensions: [],
                                 credentialsId: 'github-secret-login'
-                                submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
                         sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
