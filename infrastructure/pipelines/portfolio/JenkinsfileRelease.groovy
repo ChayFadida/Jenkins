@@ -8,7 +8,6 @@ pipeline {
         CHECKED_OUT_BRANCH = ''
     }
     stages {
-        def hello = ''
         stage('Checkout Source Code') {
             steps {
                 cleanWs()
