@@ -48,7 +48,7 @@ pipeline {
                                 branches: [[name: CHECKED_OUT_BRANCH]],
                                 extensions: [],
                                 submoduleCfg: [],
-                                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
+                                userRemoteConfigs: [[credentialsId: 'github-secret-login', url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
                         sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
                 }
@@ -80,7 +80,7 @@ pipeline {
 
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push http://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD.git"
+                            sh "git push"
                         }
                     }
                 }
