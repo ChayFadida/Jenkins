@@ -8,9 +8,11 @@ pipeline {
         CHECKED_OUT_BRANCH = ''
     }
     stages {
+        def hello = ''
         stage('Checkout Source Code') {
             steps {
                 cleanWs()
+                def gitInfo
                 dir('portfolio-src') {
                     script {
                         gitInfo = checkout([$class: 'GitSCM',
@@ -19,6 +21,17 @@ pipeline {
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
                         CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH.split('/')[-1]
+                    }
+                }
+
+                dir('portfolio-cd') {
+                    script {
+                        checkout([$class: 'GitSCM',
+                                branches: [[name: portfolio_branch]],
+                                extensions: [],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
+                        sh "git checkout ${gitInfo.GIT_BRANCH.split('/')[-1]}"
                     }
                 }
             }
@@ -40,21 +53,6 @@ pipeline {
             }
         }
         
-        stage('Checkout Deployment Source Code') {
-            steps {
-                dir('portfolio-cd') {
-                    script {
-                        gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: CHECKED_OUT_BRANCH]],
-                                extensions: [],
-                                submoduleCfg: [],
-                                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
-                        sh "git checkout ${CHECKED_OUT_BRANCH}"
-                    }
-                }
-            }
-        }
-
         stage('Update Deployment') {
             steps {
                 dir('portfolio-cd') {
@@ -71,17 +69,17 @@ pipeline {
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
                         sh "cat ${deploymentPath}"
-                        // // Commit and push the changes to the ArgoCD Git repository
-                        // sh """
-                        // git config --global user.email "chayfadida1997@gmail.com"
-                        //     git config --global user.name ChayFadida ""
-                        // """
-                        // withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        // Commit and push the changes to the ArgoCD Git repository
+                        sh """
+                        git config --global user.email "chayfadida1997@gmail.com"
+                            git config --global user.name ChayFadida ""
+                        """
+                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 
-                        //     sh "git add ${deploymentPath}"
-                        //     sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                        //     sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD.git"
-                        // }
+                            sh "git add ${deploymentPath}"
+                            sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD.git"
+                        }
                     }
                 }
             }
