@@ -47,6 +47,7 @@ pipeline {
                         gitInfo = checkout([$class: 'GitSCM',
                                 branches: [[name: CHECKED_OUT_BRANCH]],
                                 extensions: [],
+                                credentialsId: 'github-secret-login'
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
                         sh "git checkout ${CHECKED_OUT_BRANCH}"
@@ -79,7 +80,7 @@ pipeline {
                             """
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/Portfolio.git"
+                            sh "git push"
                         }
                     }
                 }
