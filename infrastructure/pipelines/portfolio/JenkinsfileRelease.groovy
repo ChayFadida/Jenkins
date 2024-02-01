@@ -80,7 +80,7 @@ pipeline {
 
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push"
+                            sh "git push http://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD"
                         }
                     }
                 }
