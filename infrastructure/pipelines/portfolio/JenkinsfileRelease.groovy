@@ -11,10 +11,9 @@ pipeline {
         stage('Checkout Source Code') {
             steps {
                 cleanWs()
-                def gitInfo
                 dir('portfolio-src') {
                     script {
-                        gitInfo = checkout([$class: 'GitSCM',
+                        def gitInfo = checkout([$class: 'GitSCM',
                                 branches: [[name: portfolio_branch]],
                                 extensions: [],
                                 submoduleCfg: [],
