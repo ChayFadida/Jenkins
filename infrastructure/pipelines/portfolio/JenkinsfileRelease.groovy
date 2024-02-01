@@ -73,8 +73,8 @@ pipeline {
 
                         // Commit and push the changes to the ArgoCD Git repository
                         sh """
-                        git config --global user.email "you@example.com"
-                            git config --global user.name "Your Name"
+                        git config --global user.email "chayfadida1997@gmail.com"
+                            git config --global user.name ChayFadida ""
                         """
                         withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 
