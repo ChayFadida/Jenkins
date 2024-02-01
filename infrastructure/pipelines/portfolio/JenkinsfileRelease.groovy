@@ -76,10 +76,12 @@ pipeline {
                         git config --global user.email "you@example.com"
                             git config --global user.name "Your Name"
                         """
-                        
-                        sh "git add ${deploymentPath}"
-                        sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                        sh "git push"        
+                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+
+                            sh "git add ${deploymentPath}"
+                            sh 'git commit -m "Update Docker image tag in deployment.yml"'
+                            sh "git push"
+                        }
                     }
                 }
             }
