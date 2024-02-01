@@ -29,7 +29,7 @@ pipeline {
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
-                        sh "git checkout ${gitInfo.GIT_BRANCH.split('/')[-1]}"
+                        sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
                 }
             }
