@@ -66,12 +66,12 @@ pipeline {
                         def deploymentYaml = readFile(deploymentPath)
 
                         // Update the image tag in the Deployment YAML
-                        deploymentYaml = deploymentYaml.replaceAll("image: harbor.chay-techs.com\\/portfolio\\/portfolio-front:(.*)\$", "niceee")
+                        deploymentYaml = deploymentYaml.replaceAll("image:\s+harbor\\.chay-techs\\.com\\/portfolio\\/portfolio-front:(\\S+)", "niceee")
 
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
-                        sh "cat ${deploymentPath}"
-                        // Commit and push the changes to the ArgoCD Git repository
+
+                        // // Commit and push the changes to the ArgoCD Git repository
                         // sh """
                         // git config --global user.email "chayfadida1997@gmail.com"
                         //     git config --global user.name ChayFadida ""
