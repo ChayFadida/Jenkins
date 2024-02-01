@@ -16,6 +16,7 @@ pipeline {
                         gitInfo = checkout([$class: 'GitSCM',
                                 branches: [[name: portfolio_branch]],
                                 extensions: [],
+                                submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/Portfolio.git']]])
                         CHECKED_OUT_BRANCH = gitInfo.GIT_BRANCH.split('/')[-1]
                     }
@@ -46,7 +47,7 @@ pipeline {
                         gitInfo = checkout([$class: 'GitSCM',
                                 branches: [[name: CHECKED_OUT_BRANCH]],
                                 extensions: [],
-                                credentialsId: 'github-secret-login'
+                                submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
                         sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
@@ -71,14 +72,15 @@ pipeline {
                         writeFile(file: deploymentPath, text: deploymentYaml)
 
                         // Commit and push the changes to the ArgoCD Git repository
+                        sh """
+                        git config --global user.email "you@example.com"
+                            git config --global user.name "Your Name"
+                        """
                         withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh """
-                            git config --global user.email "you@example.com"
-                                git config --global user.name "Your Name"
-                            """
+
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/Portfolio"
+                            sh "git push"
                         }
                     }
                 }
