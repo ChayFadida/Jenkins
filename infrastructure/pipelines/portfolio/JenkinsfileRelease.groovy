@@ -67,14 +67,10 @@ pipeline {
 
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
-                        sh "cat ${deploymentPath}"
-                        // Commit and push the changes to the ArgoCD Git repository
-                        sh """
-                        git config --global user.email "chayfadida1997@gmail.com"
-                            git config --global user.name ChayFadida ""
-                        """
-                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 
+                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh "git config --global user.email ${GIT_MAIL}"
+                            sh "git config --global user.name ${GIT_USERNAME}"
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
                             sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD.git"
