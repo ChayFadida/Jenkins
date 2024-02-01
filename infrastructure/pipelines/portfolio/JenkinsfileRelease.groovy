@@ -70,7 +70,7 @@ pipeline {
 
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
-
+                        sh "cat ${deploymentPath}"
                         // // Commit and push the changes to the ArgoCD Git repository
                         // sh """
                         // git config --global user.email "chayfadida1997@gmail.com"
