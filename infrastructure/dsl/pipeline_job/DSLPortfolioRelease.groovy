@@ -20,6 +20,8 @@ pipelineJob(JOB_NAME) {
 
     environmentVariables {
         env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
+        env('GIT_USERNAME', 'ChayFadida')
+        env('GIT_MAIL', 'chayfadida1997@gmail.com')
     }
     
     definition {
