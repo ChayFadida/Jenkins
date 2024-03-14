@@ -51,13 +51,7 @@ pipeline {
                         def dockerArgs = "--build-arg REACT_APP_EMAILJS_TEMPLATE_ID=${REACT_APP_EMAILJS_TEMPLATE_ID} --build-arg REACT_APP_EMAILJS_USER_ID=${REACT_APP_EMAILJS_USER_ID} --build-arg REACT_APP_EMAILJS_SERVICE_ID=${REACT_APP_EMAILJS_SERVICE_ID}"
 
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
-                            docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio .").with {
-                                // Bind the secrets as build arguments
-                                args "--build-arg REACT_APP_EMAILJS_SERVICE_ID=${env.REACT_APP_EMAILJS_SERVICE_ID}" +
-                                    " --build-arg REACT_APP_EMAILJS_TEMPLATE_ID=${env.REACT_APP_EMAILJS_TEMPLATE_ID}" +
-                                    " --build-arg REACT_APP_EMAILJS_USER_ID=${env.REACT_APP_EMAILJS_USER_ID}"
-                            }
-                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio .")
+                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "--build-arg REACT_APP_EMAILJS_USER_ID=${REACT_APP_EMAILJS_USER_ID} -f Dockerfile.portfolio .")
                             docker_image.push()
                             sh "docker rmi ${docker_image.id}"
                         }
