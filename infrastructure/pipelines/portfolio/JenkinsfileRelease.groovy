@@ -49,6 +49,7 @@ pipeline {
                         def REACT_APP_EMAILJS_SERVICE_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_SERVICE_ID')                       
                         // Build docker arguments
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
+                            REACT_APP_EMAILJS_USER_ID = "1234"
                             def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "--build-arg REACT_APP_EMAILJS_USER_ID=${REACT_APP_EMAILJS_USER_ID} -f Dockerfile.portfolio .")
                             docker_image.push()
                             sh "docker rmi ${docker_image.id}"
