@@ -42,10 +42,23 @@ pipeline {
                     script {
                         def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                         IMAGE_TAG = "${CHECKED_OUT_BRANCH}_${commitHash}"
-                        docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
-                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio .")
-                            docker_image.push()
-                            sh "docker rmi ${docker_image.id}"
+                        
+                        // Retrieve credentials
+                        def REACT_APP_EMAILJS_TEMPLATE_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_TEMPLATE_ID')
+                        def REACT_APP_EMAILJS_USER_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_USER_ID')
+                        def REACT_APP_EMAILJS_SERVICE_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_SERVICE_ID')
+                        
+                        // Check if credentials are valid
+                        if (REACT_APP_EMAILJS_TEMPLATE_ID && REACT_APP_EMAILJS_USER_ID && REACT_APP_EMAILJS_SERVICE_ID) {
+                            // Build docker arguments
+                            def dockerArgs = "--build-arg REACT_APP_EMAILJS_TEMPLATE_ID=${REACT_APP_EMAILJS_TEMPLATE_ID} --build-arg REACT_APP_EMAILJS_USER_ID=${REACT_APP_EMAILJS_USER_ID} --build-arg=${REACT_APP_EMAILJS_SERVICE_ID}"
+                            docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
+                                def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio ${dockerArgs} .")
+                                docker_image.push()
+                                sh "docker rmi ${docker_image.id}"
+                            }
+                        } else {
+                            error("Missing credentials")
                         }
                     }
                 }
