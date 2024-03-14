@@ -14,7 +14,7 @@ pipelineJob(JOB_NAME) {
             regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
             printContributedVariables(true)
             printPostContent(true)
-            token(credentialsId: 'Portfolio-CI-Webhook-Token')
+            token('PORTFOLIO-CI')
         }
     }
 
