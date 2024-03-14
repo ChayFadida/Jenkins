@@ -45,7 +45,7 @@ pipeline {
                         
                         // Retrieve credentials
                         def REACT_APP_EMAILJS_TEMPLATE_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_TEMPLATE_ID')
-                        def REACT_APP_EMAILJS_USER_ID = credentials('PORTFOLIO_REACT_APP_EMAILJS_USER_ID').toString()
+                        def REACT_APP_EMAILJS_USER_ID = "123"//credentials('PORTFOLIO_REACT_APP_EMAILJS_USER_ID').toString()
                         // Build docker arguments
 
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
