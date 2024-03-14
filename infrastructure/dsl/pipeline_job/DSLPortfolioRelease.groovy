@@ -11,10 +11,10 @@ pipelineJob(JOB_NAME) {
                 }
             }
             regexpFilterText("\$portfolio_branch")
-            regexpFilterExpression("^(refs\\/heads\\/(fakeMaster|fakeDevelop))*?\$")
+            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
             printContributedVariables(true)
             printPostContent(true)
-            token('PORTFOLIO-CI')
+            token(credentialsId: 'Portfolio-CI-Webhook-Token')
         }
     }
 

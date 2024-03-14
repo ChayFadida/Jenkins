@@ -29,7 +29,7 @@ pipeline {
                                 branches: [[name: portfolio_branch]],
                                 extensions: [],
                                 submoduleCfg: [],
-                                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioCD.git']]])
+                                userRemoteConfigs: [[url: 'https://github.com/ChayFadida/PortfolioGitOps.git']]])
                         sh "git checkout ${CHECKED_OUT_BRANCH}"
                     }
                 }
