@@ -39,7 +39,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 dir('portfolio-src') {
-                    sh "pwd"
+                    sh "ls"
                     script {
                         def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                         IMAGE_TAG = "${CHECKED_OUT_BRANCH}_${commitHash}"
