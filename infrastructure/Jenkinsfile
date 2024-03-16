@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'jenkins-jenkins-agent-harbor'
+            label 'K8S-With-Docker'
         }
     }
     options {
@@ -15,7 +15,8 @@ pipeline {
                 checkout scm
             }
         }
-
+        
+        
         stage('Create or Update Jobs and Folders') {
             steps {
                 script {
@@ -25,7 +26,8 @@ pipeline {
                             ]
                     jobDsl(additionalClasspath: 'infrastructure/dsl/pipeline_job',
                         lookupStrategy: 'SEED_JOB',                        
-                        targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),                
+                        targets: ['infrastructure/dsl/pipeline_job/DSL*.groovy'].join('\n'),
+                        sandbox: true,           
                         removedJobAction: 'DELETE', // Action to take on removed jobs
                         additionalParameters: additionalParams)
                     println "Done processing DSL scripts"    

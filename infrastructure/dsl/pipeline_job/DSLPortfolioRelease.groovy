@@ -1,15 +1,29 @@
-def JOB_NAME = "pipelines/portfolioRelease"
+def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
-    description 'Portfolio Release Pipeline'
-
-    parameters {
-        stringParam('DOCKER_REGISTRY', 'harbor.chay-techs.com', 'Docker registry URL')
-        stringParam('APP_NAME', 'portfolio-front', 'Name of your application')
-        stringParam('NAMESPACE', 'chay-techs-production', 'Kubernetes namespace')
-        stringParam('IMAGE_TAG', '', 'Docker image tag')
+    description 'Portfolio CI Pipeline'
+    triggers {
+        genericTrigger {
+            genericVariables {
+                genericVariable {
+                    key("portfolio_branch")
+                    value("\$.ref")
+                }
+            }
+            regexpFilterText("\$portfolio_branch")
+            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
+            printContributedVariables(true)
+            printPostContent(true)
+            tokenCredentialId('Portfolio-CI-Webhook-Token')
+        }
     }
 
+    environmentVariables {
+        env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
+        env('GIT_USERNAME', 'ChayFadida')
+        env('GIT_MAIL', 'chayfadida1997@gmail.com')
+    }
+    
     definition {
         cpsScm {
             scm {
