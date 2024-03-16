@@ -22,7 +22,7 @@ pipelineJob(JOB_NAME) {
         env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
         env('GIT_USERNAME', 'ChayFadida')
         env('GIT_MAIL', 'chayfadida1997@gmail.com')
-    }s
+    }
     
     definition {
         cpsScm {
