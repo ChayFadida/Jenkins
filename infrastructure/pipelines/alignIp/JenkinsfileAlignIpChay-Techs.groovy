@@ -26,7 +26,6 @@ pipeline {
             steps {
                 sh 'chmod +x ./change_domains_ip.sh' // Make the script executable
                 sh "./change_domains_ip.sh '${EMAIL_CREDENTIAL}' '${API_KEY_CREDENTIAL}' '${ZONE_IDENTIFIER_CREDENTIAL}' 'chay-techs.com'"
-                sh "./change_domains_ip.sh '${EMAIL_CREDENTIAL}' '${API_KEY_CREDENTIAL}' '${ZONE_IDENTIFIER_CREDENTIAL}' 'stud-for-stud.com'"
             }
         }
     }
