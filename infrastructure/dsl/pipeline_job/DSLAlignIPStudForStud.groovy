@@ -1,4 +1,4 @@
-def JOB_NAME = "pipelines/alignIp-Chay-Techs"
+def JOB_NAME = "pipelines/alignIp-Stud-For-Stud"
 
 pipelineJob(JOB_NAME) {
     description 'Align Stud-For-Stud Ip With CloudFlare Pipeline'
