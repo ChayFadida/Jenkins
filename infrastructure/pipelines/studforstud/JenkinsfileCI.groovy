@@ -57,11 +57,15 @@ pipeline {
         
         stage('Update Deployment') {
             steps {
-                dir('studforstud-cd') {
-                    script {            
-                        // Define the path to the Deployment YAML file based on the branch/environment
-                        def deploymentPath = "environments/${CHECKED_OUT_BRANCH}/deployment.yml"
-
+                script {
+                    // Define an array of file paths
+                    if (CHECKED_OUT_BRANCH == "master") {
+                        def deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml", "environments/${CHECKED_OUT_BRANCH}/cron-backup-cloud.yml"]
+                    } else {
+                        def deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml"]
+                    }
+                    // Iterate over each deployment path
+                    for (def deploymentPath in deploymentPaths) {
                         // Read the Deployment YAML file
                         def deploymentYaml = readFile(deploymentPath)
 
@@ -71,17 +75,21 @@ pipeline {
                         // Write the modified Deployment YAML back to the file
                         writeFile(file: deploymentPath, text: deploymentYaml)
 
-                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh "git config --global user.email ${GIT_MAIL}"
-                            sh "git config --global user.name ${GIT_USERNAME}"
-                            sh "git add ${deploymentPath}"
-                            sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/StudForStudGitOps.git"
-                        }
+                        // Add the file to Git staging
+                        sh "git add ${deploymentPath}"
+                    }
+
+                    // Commit changes to Git
+                    withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "git config --global user.email ${GIT_MAIL}"
+                        sh "git config --global user.name ${GIT_USERNAME}"
+                        sh 'git commit -m "Update Docker image for all yml files"'
+                        sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/StudForStudGitOps.git"
                     }
                 }
             }
         }
+
     }
 
     post {

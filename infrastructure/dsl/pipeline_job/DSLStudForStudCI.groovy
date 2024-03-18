@@ -11,7 +11,7 @@ pipelineJob(JOB_NAME) {
                 }
             }
             regexpFilterText("\$studforstud_branch")
-            regexpFilterExpression("^(refs\\/heads\\/(develop))*?\$")
+            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
             printContributedVariables(true)
             printPostContent(true)
             tokenCredentialId('StudForStud-CI-Webhook-Token')
