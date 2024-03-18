@@ -58,11 +58,12 @@ pipeline {
         stage('Update Deployment') {
             steps {
                 script {
+                    def deploymentPaths
                     // Define an array of file paths
                     if (CHECKED_OUT_BRANCH == "master") {
-                        def deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml", "environments/${CHECKED_OUT_BRANCH}/cron-backup-cloud.yml"]
+                        deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml", "environments/${CHECKED_OUT_BRANCH}/cron-backup-cloud.yml"]
                     } else {
-                        def deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml"]
+                        deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml"]
                     }
                     // Iterate over each deployment path
                     for (def deploymentPath in deploymentPaths) {
