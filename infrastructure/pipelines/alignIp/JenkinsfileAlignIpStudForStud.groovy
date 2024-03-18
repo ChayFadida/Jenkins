@@ -5,9 +5,9 @@ pipeline {
         }
     }
     environment {
-        EMAIL_CREDENTIAL = credentials('EMAIL_CREDENTIAL')
-        API_KEY_CREDENTIAL = credentials('API_KEY_CREDENTIAL')
-        ZONE_IDENTIFIER_CREDENTIAL = credentials('ZONE_IDENTIFIER_CREDENTIAL')
+        EMAIL_CREDENTIAL = credentials('STUDFORSTUD-EMAIL_CREDENTIAL')
+        API_KEY_CREDENTIAL = credentials('STUDFORSTUD-API_KEY_CREDENTIAL')
+        ZONE_IDENTIFIER_CREDENTIAL = credentials('STUDFORSTUD-ZONE_IDENTIFIER_CREDENTIAL')
     }
     stages {
         stage('Checkout Source Code') {
@@ -25,7 +25,7 @@ pipeline {
         stage('Run Script') {
             steps {
                 sh 'chmod +x ./change_domains_ip.sh' // Make the script executable
-                sh "./change_domains_ip.sh '${EMAIL_CREDENTIAL}' '${API_KEY_CREDENTIAL}' '${ZONE_IDENTIFIER_CREDENTIAL}' 'chay-techs.com stud-for-stud.com'"
+                sh "./change_domains_ip.sh '${EMAIL_CREDENTIAL}' '${API_KEY_CREDENTIAL}' '${ZONE_IDENTIFIER_CREDENTIAL}' 'stud-for-stud.com'"
             }
         }
     }
