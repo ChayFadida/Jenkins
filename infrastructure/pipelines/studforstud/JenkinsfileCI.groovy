@@ -57,35 +57,37 @@ pipeline {
         
         stage('Update Deployment') {
             steps {
-                script {
-                    def deploymentPaths
-                    // Define an array of file paths
-                    if (CHECKED_OUT_BRANCH == "master") {
-                        deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml", "environments/${CHECKED_OUT_BRANCH}/cron-backup-cloud.yml"]
-                    } else {
-                        deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml"]
-                    }
-                    // Iterate over each deployment path
-                    for (def deploymentPath in deploymentPaths) {
-                        // Read the Deployment YAML file
-                        def deploymentYaml = readFile(deploymentPath)
+                dir('studforstud-cd') {
+                    script {
+                        def deploymentPaths
+                        // Define an array of file paths
+                        if (CHECKED_OUT_BRANCH == "master") {
+                            deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml", "environments/${CHECKED_OUT_BRANCH}/cron-backup-cloud.yml"]
+                        } else {
+                            deploymentPaths = ["environments/${CHECKED_OUT_BRANCH}/deployment.yml"]
+                        }
+                        // Iterate over each deployment path
+                        for (def deploymentPath in deploymentPaths) {
+                            // Read the Deployment YAML file
+                            def deploymentYaml = readFile(deploymentPath)
 
-                        // Update the image tag in the Deployment YAML
-                        deploymentYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/studforstud\\/studforstud-app:)\\S+", IMAGE_TAG)
+                            // Update the image tag in the Deployment YAML
+                            deploymentYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/studforstud\\/studforstud-app:)\\S+", IMAGE_TAG)
 
-                        // Write the modified Deployment YAML back to the file
-                        writeFile(file: deploymentPath, text: deploymentYaml)
+                            // Write the modified Deployment YAML back to the file
+                            writeFile(file: deploymentPath, text: deploymentYaml)
 
-                        // Add the file to Git staging
-                        sh "git add ${deploymentPath}"
-                    }
+                            // Add the file to Git staging
+                            sh "git add ${deploymentPath}"
+                        }
 
-                    // Commit changes to Git
-                    withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "git config --global user.email ${GIT_MAIL}"
-                        sh "git config --global user.name ${GIT_USERNAME}"
-                        sh 'git commit -m "Update Docker image for all yml files"'
-                        sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/StudForStudGitOps.git"
+                        // Commit changes to Git
+                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh "git config --global user.email ${GIT_MAIL}"
+                            sh "git config --global user.name ${GIT_USERNAME}"
+                            sh 'git commit -m "Update Docker image for all yml files"'
+                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/StudForStudGitOps.git"
+                        }
                     }
                 }
             }
