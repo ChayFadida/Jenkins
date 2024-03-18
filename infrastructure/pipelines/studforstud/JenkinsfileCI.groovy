@@ -73,6 +73,7 @@ pipeline {
 
                             // Update the image tag in the Deployment YAML
                             deploymentYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/studforstud\\/studforstud-app:)\\S+", IMAGE_TAG)
+                            deploymentYaml = deploymentYaml.replaceAll("(?<=- name: APP_VERSION\\n {14}value: \\\\?\")[^\"]+", IMAGE_TAG)
 
                             // Write the modified Deployment YAML back to the file
                             writeFile(file: deploymentPath, text: deploymentYaml)
