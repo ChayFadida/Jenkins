@@ -11,7 +11,7 @@ pipelineJob(JOB_NAME) {
         cpsScm {
             scm {
                 git {
-                    branch "chay/portfolio_release"
+                    branch "studforstud"
                     remote {
                         url 'https://github.com/ChayFadida/Jenkins.git'
                     }
