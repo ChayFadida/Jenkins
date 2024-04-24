@@ -20,6 +20,8 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
+                sh "ls"
+                sh "pwd"
                 dir("cloudflare"){
                     script {
                         sh "terraform init"
