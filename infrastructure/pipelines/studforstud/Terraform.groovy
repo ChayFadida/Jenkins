@@ -20,27 +20,30 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                // Initialize Terraform
-                script {
-                    sh "terraform init"
+                dir("cloudflare"){
+                    script {
+                        sh "terraform init"
+                    }
                 }
             }
         }
         
         stage('Terraform Plan') {
             steps {
-                // Generate and display Terraform plan
-                script {
-                    sh "terraform plan -out=tfplan"
+                dir("cloudflare"){
+                    script {
+                        sh "terraform plan -out=tfplan"
+                    }
                 }
             }
         }
         
         stage('Terraform Apply') {
             steps {
-                // Apply Terraform changes
-                script {
-                    sh "terraform apply -auto-approve tfplan"
+                dir("cloudflare"){
+                    script {
+                        sh "terraform apply -auto-approve tfplan"
+                    }
                 }
             }
         }
