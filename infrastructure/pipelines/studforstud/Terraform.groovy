@@ -44,23 +44,26 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('Terraform Import All Records') {
+            steps {
+                dir("CloudFlare"){
+                    script {
+                        def records = sh(script: "terraform show -json | jq '.values.root_module.resources[] | select(.type==\"cloudflare_record\") | .address'", returnStdout: true).trim().split('\n')
+                        echo records
+                        for (record in records) {
+                            sh "terraform import $record"
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Terraform Apply') {
             steps {
                 dir("CloudFlare"){
                     script {
-                        def terraformApplyOutput = sh(
-                            script: "terraform apply -auto-approve tfplan 2>&1 || true", 
-                            returnStdout: true
-                        ).trim()
-
-                        // Check if the output contains the specific error message
-                        if (terraformApplyOutput.contains("expected DNS record to not already be present but already exists")) {
-                            echo "Skipping Terraform apply because DNS record already exists"
-                        } else {
-                            // If the error message is not found, print the Terraform apply output
-                            echo "Terraform apply output: ${terraformApplyOutput}"
-                        }
+                        sh "terraform apply -auto-approve tfplan"
                     }
                 }
             }
