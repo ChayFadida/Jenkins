@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh "ls"
                 sh "pwd"
-                dir("cloudflare"){
+                dir("CloudFlare"){
                     script {
                         sh "terraform init"
                     }
@@ -32,7 +32,7 @@ pipeline {
         
         stage('Terraform Plan') {
             steps {
-                dir("cloudflare"){
+                dir("CloudFlare"){
                     script {
                         sh "terraform plan -out=tfplan"
                     }
@@ -42,7 +42,7 @@ pipeline {
         
         stage('Terraform Apply') {
             steps {
-                dir("cloudflare"){
+                dir("CloudFlare"){
                     script {
                         sh "terraform apply -auto-approve tfplan"
                     }
