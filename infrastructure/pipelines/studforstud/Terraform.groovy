@@ -49,7 +49,18 @@ pipeline {
             steps {
                 dir("CloudFlare"){
                     script {
-                        sh "terraform apply -auto-approve tfplan"
+                        def terraformApplyOutput = sh(
+                            script: "terraform apply -auto-approve tfplan 2>&1 || true", 
+                            returnStdout: true
+                        ).trim()
+
+                        // Check if the output contains the specific error message
+                        if (terraformApplyOutput.contains("expected DNS record to not already be present but already exists")) {
+                            echo "Skipping Terraform apply because DNS record already exists"
+                        } else {
+                            // If the error message is not found, print the Terraform apply output
+                            echo "Terraform apply output: ${terraformApplyOutput}"
+                        }
                     }
                 }
             }
