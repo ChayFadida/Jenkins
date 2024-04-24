@@ -4,6 +4,11 @@ pipeline {
             label 'K8S-With-Docker'
         }
     }
+    environment {
+        TF_VAR_zone_id = credentials('TF_VAR_zone_id')
+        TF_VAR_domain = credentials('TF_VAR_domain')
+        TF_VAR_token = credentials('TF_VAR_token')
+    }
     stages {
         stage('Checkout Source Code') {
             steps {
