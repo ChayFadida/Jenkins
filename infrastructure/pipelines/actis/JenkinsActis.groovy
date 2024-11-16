@@ -15,7 +15,7 @@ pipeline {
                 dir('actis-src') {
                     script {
                         def gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: portfolio_branch]],
+                                branches: [[name: actis_branch]],
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/actis.git']]])
@@ -26,7 +26,7 @@ pipeline {
                 dir('actis-cd') {
                     script {
                         checkout([$class: 'GitSCM',
-                                branches: [[name: portfolio_branch]],
+                                branches: [[name: actis_branch]],
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: 'https://github.com/ChayFadida/ActisGitOps.git']]])
