@@ -59,7 +59,7 @@ pipeline {
         
         stage('Update Deployment') {
             steps {
-                dir('portfolio-cd') {
+                dir('actis-cd') {
                     script {            
                         // Define the path to the Deployment YAML file based on the branch/environment
                         def deploymentPath = "deployment.yml"
@@ -78,7 +78,7 @@ pipeline {
                             sh "git config --global user.name ${GIT_USERNAME}"
                             sh "git add ${deploymentPath}"
                             sh 'git commit -m "Update Docker image tag in deployment.yml"'
-                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/PortfolioCD.git"
+                            sh "git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/ActisGitOps.git"
                         }
                     }
                 }
