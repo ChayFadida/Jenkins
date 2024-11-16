@@ -46,7 +46,7 @@ pipeline {
                         
                         // Build docker arguments
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
-                            def docker_image = docker.build("${DOCKER_REGISTRY}/portfolio/portfolio-front:${IMAGE_TAG}", "-f Dockerfile.portfolio .")
+                            def docker_image = docker.build("${DOCKER_REGISTRY}/actis/website:${IMAGE_TAG}", "-f Dockerfile .")
                             docker_image.push()
                             sh "docker rmi ${docker_image.id}"
                         }
