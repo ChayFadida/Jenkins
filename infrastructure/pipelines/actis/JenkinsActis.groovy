@@ -43,14 +43,15 @@ pipeline {
                     script {
                         def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                         IMAGE_TAG = "${CHECKED_OUT_BRANCH}_${commitHash}"
-                        
-                        // Build docker arguments
-                        docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
-                            def docker_image = docker.build("${DOCKER_REGISTRY}/actis/website:${IMAGE_TAG}", "-f Dockerfile .")
-                            docker_image.push()
-                            sh "docker rmi ${docker_image.id}"
+                        withCredentials([string(credentialsId: 'RESEND_API_KEY', variable: 'RESEND_API_KEY'),
+                                         string(credentialsId: 'CONTACT_EMAIL', variable: 'CONTACT_EMAIL') ]){
+                            // Build docker arguments
+                            docker.withRegistry("https://${DOCKER_REGISTRY}", 'harbor-cred-secret') {
+                                def docker_image = docker.build("${DOCKER_REGISTRY}/actis/website:${IMAGE_TAG}", "--build-arg RESEND_API_KEY=${RESEND_API_KEY} --build-arg CONTACT_EMAIL=${CONTACT_EMAIL}  -f Dockerfile .")
+                                docker_image.push()
+                                sh "docker rmi ${docker_image.id}"
+                            }
                         }
-                        
                     }
                 }
             }
