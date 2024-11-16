@@ -34,7 +34,7 @@ pipelineJob(JOB_NAME) {
                     }
                 }
             }
-            scriptPath "infrastructure/pipelines/actis/JenkinsfileCI.groovy"
+            scriptPath "infrastructure/pipelines/actis/JenkinsActis.groovy"
         }
     }
 }
