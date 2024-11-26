@@ -2,7 +2,9 @@ def JOB_NAME = "pipelines/Hello-World-Chay"
 
 pipelineJob(JOB_NAME) {
     description 'Hello World Chay CI'
-    env(HELLO_WORLD_CHAY_GITHUB_URL, "https://github.com/ChayFadida/HelloWorldChay.git")
+    environmentVariables {
+        env(HELLO_WORLD_CHAY_GITHUB_URL, "https://github.com/ChayFadida/HelloWorldChay.git")
+    }
     definition {
         cpsScm {
             scm {
