@@ -1,6 +1,6 @@
 import com.utils
 def JOB_NAME = "pipelines/StudForStud-CI"
-Constants.createPathFolder(this, 'pipelines')
+CommonSteps.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'StudForStud CI Pipeline'
     if (productionEnv == true) {

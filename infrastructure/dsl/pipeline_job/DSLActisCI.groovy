@@ -1,7 +1,7 @@
 import com.utils
 
 def JOB_NAME = "pipelines/Actis-CI"
-Constants.createPathFolder(this, 'pipelines')
+CommonSteps.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'Actis CI Pipeline'
     if (productionEnv == true) {

@@ -21,6 +21,7 @@ pipeline {
             steps {
                 script {
                     final Map additionalParams = [
+                                productionEnv: productionEnv.toBoolean(),
                                 disableAllJobs: env.JOB_NAME.contains('/'),
                                 default_ci_repo: params.default_ci_repo
                             ]
