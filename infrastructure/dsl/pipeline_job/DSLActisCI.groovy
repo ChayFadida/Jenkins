@@ -1,4 +1,4 @@
-import com.utils
+import com.utils.CommonSteps
 
 def JOB_NAME = "pipelines/Actis-CI"
 CommonSteps.createPathFolder(this, 'pipelines')

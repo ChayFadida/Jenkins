@@ -1,4 +1,4 @@
-import com.utils
+import com.utils.CommonSteps
 def JOB_NAME = "pipelines/alignIp-Chay-Techs"
 
 CommonSteps.createPathFolder(this, 'pipelines')
