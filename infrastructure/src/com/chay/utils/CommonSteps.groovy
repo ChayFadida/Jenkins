@@ -1,4 +1,4 @@
-package com.utils
+package com.chay.utils
 
 class CommonSteps {
     static def createPathFolder(dslFactory, path) {
