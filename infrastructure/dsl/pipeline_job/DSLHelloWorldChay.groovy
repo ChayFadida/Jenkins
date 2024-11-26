@@ -1,7 +1,9 @@
-def JOB_NAME = "pipelines/Hello-World-Chay"
+def JOB_NAME = "pipelines/balb"
 
 pipelineJob(JOB_NAME) {
-    description 'Hello World Chay CI'
+    description 'Align Stud-For-Stud Ip With CloudFlare Pipeline'
+
+
     definition {
         cpsScm {
             scm {
@@ -12,7 +14,7 @@ pipelineJob(JOB_NAME) {
                     }
                 }
             }
-            scriptPath "infrastructure/pipelines/helloworld/JenkinsfileHelloWorld.groovy"
+            scriptPath "infrastructure/pipelines/alignIp/JenkinsfileAlignIpStudForStud.groovy"
         }
     }
 }
