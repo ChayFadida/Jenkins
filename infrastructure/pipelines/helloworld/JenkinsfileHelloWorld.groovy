@@ -13,7 +13,7 @@ pipeline {
                               doGenerateSubmoduleConfigurations: false,
                               extensions: [],
                               submoduleCfg: [],
-                              userRemoteConfigs: [[url: HELLO_WORLD_CHAY_GITHUB_URL]]])
+                              userRemoteConfigs: [[url: GIT_REMOTE]]])
                 }
             }
         }
