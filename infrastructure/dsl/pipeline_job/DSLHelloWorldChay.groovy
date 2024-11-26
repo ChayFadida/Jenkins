@@ -4,6 +4,8 @@ pipelineJob(JOB_NAME) {
     description 'Hello World Chay CI'
     environmentVariables {
         env("GIT_REMOTE", 'https://github.com/ChayFadida/HelloWorldChay.git')
+        env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
+        env('GIT_USERNAME', 'ChayFadida')
     }
 
     definition {
