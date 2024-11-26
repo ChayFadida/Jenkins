@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'jenkins-jenkins-agent'
+            label 'K8S-With-Docker'
         }
     }
     stages {
@@ -27,7 +27,7 @@ pipeline {
                         version[-1] = (version[-1].toInteger() + 1).toString()
                         def newVersion = version.join('.')
                         sh """
-                        mvn versions:set -DnewVersion=${newVersion} -DgenerateBackupPoms=false
+                            mvn versions:set -DnewVersion=${newVersion} -DgenerateBackupPoms=false
                         """
                         echo "Updated version to ${newVersion}"
                     }
