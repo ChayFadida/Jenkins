@@ -4,9 +4,8 @@ pipeline {
             label 'on-prem'
         }
     }  
-    environment {
-        MAVEN_HOME = '/opt/apache-maven-3.9.9/bin/mvn'  // Replace with your actual Maven directory
-        PATH = "${MAVEN_HOME}/bin:${env.PATH}"
+    tools {
+        maven 'Maven-3.9.9'  // Use the name of the configured Maven tool
     }
     stages {
         stage('Checkout Source Code') {
