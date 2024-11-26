@@ -1,5 +1,6 @@
+import com.utils
 def JOB_NAME = "pipelines/terraformStud"
-
+Constants.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'StudForStud CI Pipeline'
 

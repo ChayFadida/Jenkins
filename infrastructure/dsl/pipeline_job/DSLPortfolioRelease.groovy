@@ -1,5 +1,6 @@
+import com.utils
 def JOB_NAME = "pipelines/Portfolio-CI"
-
+Constants.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
     if (productionEnv == true) {

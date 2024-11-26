@@ -1,6 +1,6 @@
 import com.utils
 def JOB_NAME = "pipelines/Hello-World-Chay-CI"
-
+Constants.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'CI for hello world chay application'
     if (productionEnv == true) {

@@ -1,5 +1,7 @@
+import com.utils
 def JOB_NAME = "pipelines/alignIp-Chay-Techs"
 
+Constants.createPathFolder(this, 'pipelines')
 pipelineJob(JOB_NAME) {
     description 'Align Chay-Techs Ip With CloudFlare Pipeline'
     if (productionEnv == true) {
