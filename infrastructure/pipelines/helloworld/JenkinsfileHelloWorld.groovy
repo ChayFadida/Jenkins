@@ -1,7 +1,7 @@
 pipeline {
     agent {
-        kubernetes {
-            label 'K8S-With-Docker'
+        node {
+            label 'on-prem'
         }
     }
     stages {
