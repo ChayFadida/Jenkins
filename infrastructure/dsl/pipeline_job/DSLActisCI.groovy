@@ -2,19 +2,21 @@ def JOB_NAME = "pipelines/Actis-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Actis CI Pipeline'
-    triggers {
-        genericTrigger {
-            genericVariables {
-                genericVariable {
-                    key("actis_branch")
-                    value("\$.ref")
+    if (productionEnv == true) {
+        triggers {
+            genericTrigger {
+                genericVariables {
+                    genericVariable {
+                        key("actis_branch")
+                        value("\$.ref")
+                    }
                 }
+                regexpFilterText("\$actis_branch")
+                regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
+                printContributedVariables(true)
+                printPostContent(true)
+                tokenCredentialId('Actis-CI-Webhook-Token')
             }
-            regexpFilterText("\$actis_branch")
-            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
-            printContributedVariables(true)
-            printPostContent(true)
-            tokenCredentialId('Actis-CI-Webhook-Token')
         }
     }
 

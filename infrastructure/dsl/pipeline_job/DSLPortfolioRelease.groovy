@@ -2,22 +2,23 @@ def JOB_NAME = "pipelines/Portfolio-CI"
 
 pipelineJob(JOB_NAME) {
     description 'Portfolio CI Pipeline'
-    triggers {
-        genericTrigger {
-            genericVariables {
-                genericVariable {
-                    key("portfolio_branch")
-                    value("\$.ref")
+    if (productionEnv == true) {
+        triggers {
+            genericTrigger {
+                genericVariables {
+                    genericVariable {
+                        key("portfolio_branch")
+                        value("\$.ref")
+                    }
                 }
+                regexpFilterText("\$portfolio_branch")
+                regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
+                printContributedVariables(true)
+                printPostContent(true)
+                tokenCredentialId('Portfolio-CI-Webhook-Token')
             }
-            regexpFilterText("\$portfolio_branch")
-            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
-            printContributedVariables(true)
-            printPostContent(true)
-            tokenCredentialId('Portfolio-CI-Webhook-Token')
         }
     }
-
     environmentVariables {
         env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
         env('GIT_USERNAME', 'ChayFadida')

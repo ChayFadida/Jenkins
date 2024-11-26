@@ -2,11 +2,11 @@ def JOB_NAME = "pipelines/alignIp-Chay-Techs"
 
 pipelineJob(JOB_NAME) {
     description 'Align Chay-Techs Ip With CloudFlare Pipeline'
-    
-    triggers {
-        cron('*/5 * * * *') // Schedule the job to run every 5 minutes
+    if (productionEnv == true) {
+        triggers {
+            cron('*/5 * * * *') // Schedule the job to run every 5 minutes
+        }
     }
-
     definition {
         cpsScm {
             scm {

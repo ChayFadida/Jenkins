@@ -1,7 +1,8 @@
-def JOB_NAME = "pipelines/alignIp-Stud-For-Stud"
+import com.utils
+def JOB_NAME = "pipelines/Hello-World-Chay-CI"
 
 pipelineJob(JOB_NAME) {
-    description 'Align Stud-For-Stud Ip With CloudFlare Pipeline'
+    description 'CI for hello world chay application'
     if (productionEnv == true) {
         triggers {
             cron('*/5 * * * *') // Schedule the job to run every 5 minutes
@@ -13,7 +14,7 @@ pipelineJob(JOB_NAME) {
                 git {
                     branch branchName
                     remote {
-                        url 'https://github.com/ChayFadida/Jenkins.git'
+                        url Constants.HELLO_WORLD_CHAY_GITHUB_URL
                     }
                 }
             }

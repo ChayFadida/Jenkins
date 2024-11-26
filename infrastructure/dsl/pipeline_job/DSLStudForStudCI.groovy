@@ -2,22 +2,23 @@ def JOB_NAME = "pipelines/StudForStud-CI"
 
 pipelineJob(JOB_NAME) {
     description 'StudForStud CI Pipeline'
-    triggers {
-        genericTrigger {
-            genericVariables {
-                genericVariable {
-                    key("studforstud_branch")
-                    value("\$.ref")
+    if (productionEnv == true) {
+        triggers {
+            genericTrigger {
+                genericVariables {
+                    genericVariable {
+                        key("studforstud_branch")
+                        value("\$.ref")
+                    }
                 }
+                regexpFilterText("\$studforstud_branch")
+                regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
+                printContributedVariables(true)
+                printPostContent(true)
+                tokenCredentialId('StudForStud-CI-Webhook-Token')
             }
-            regexpFilterText("\$studforstud_branch")
-            regexpFilterExpression("^(refs\\/heads\\/(master|develop))*?\$")
-            printContributedVariables(true)
-            printPostContent(true)
-            tokenCredentialId('StudForStud-CI-Webhook-Token')
         }
     }
-
     environmentVariables {
         env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
         env('GIT_USERNAME', 'ChayFadida')
