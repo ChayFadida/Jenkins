@@ -2,9 +2,6 @@ def JOB_NAME = "pipelines/Hello-World-Chay"
 
 pipelineJob(JOB_NAME) {
     description 'Hello World Chay CI'
-    environmentVariables {
-        env(HELLO_WORLD_CHAY_GITHUB_URL, "https://github.com/ChayFadida/HelloWorldChay.git")
-    }
     definition {
         cpsScm {
             scm {
@@ -15,7 +12,7 @@ pipelineJob(JOB_NAME) {
                     }
                 }
             }
-            scriptPath "infrastructure/pipelines/alignIp/JenkinsfileAlignIpStudForStud.groovy"
+            scriptPath "infrastructure/pipelines/helloworld/JenkinsfileHelloWorld.groovy"
         }
     }
 }
