@@ -1,9 +1,9 @@
 pipeline {
     agent {
-        node {
-            label 'on-prem'
+        kubernetes {
+            label 'K8S-With-Docker-Maven'
         }
-    }  
+    }
     environment {
         MAVEN_HOME = '/opt/apache-maven-3.9.9/bin/mvn'  // Replace with your actual Maven directory
         PATH = "${MAVEN_HOME}/bin:${env.PATH}"
