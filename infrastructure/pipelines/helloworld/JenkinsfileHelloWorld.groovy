@@ -25,7 +25,7 @@ pipeline {
         stage('Run Maven Tests') {
             steps {
                 dir('myapp') {
-                    sh "${MAVEN_HOME}/bin/mvn clean test -DskipTests=false"
+                    sh "mvn clean test -DskipTests=false"
                 }
             }
         }
