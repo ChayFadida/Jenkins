@@ -21,6 +21,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Maven Tests') {
+            steps {
+                dir('myapp') {
+                    sh "${MAVEN_HOME}/bin/mvn clean test -DskipTests=false"
+                }
+            }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                junit 'myapp/target/**/TEST-*.xml'
+            }
+        }
+
         stage('Bump Patch Version') {
             steps {
                 dir('myapp') {
