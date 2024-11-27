@@ -80,7 +80,7 @@ pipeline {
                 dir('myapp') {
                     script {
                         docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
-                            def docker_image = docker.build("${dockerRegistry}/${imageRepo}/${imageName}:11", "-f Dockerfile .")
+                            def docker_image = docker.build("${dockerRegistry}/${imageRepo}/${imageName}:11", "--no-cache -f Dockerfile .")
                                 docker_image.push()
                                 sh "docker rmi ${docker_image.id}"
                         }
