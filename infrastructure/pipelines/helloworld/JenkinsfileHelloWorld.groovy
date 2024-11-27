@@ -56,14 +56,14 @@ pipeline {
         stage('Compile Project') {
             steps {
                 dir('myapp') {
-                    sh "${MAVEN_HOME}/bin/mvn compile"
+                    sh "mvn compile"
                 }
             }
         }
         stage('Package Project') {
             steps {
                 dir('myapp') {
-                    sh "${MAVEN_HOME}/bin/mvn package -DskipTests"
+                    sh "mvn package -DskipTests"
                 }
             }
         }
