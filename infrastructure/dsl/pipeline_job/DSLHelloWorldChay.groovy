@@ -10,7 +10,9 @@ pipelineJob(JOB_NAME) {
 
     parameters {
         stringParam('branchName', '', 'Branch to build')
-        stringParam('dockerRegistry', '', 'Branch to build')
+        stringParam('dockerRegistry', 'Harbor.Chay-Techs.com', 'Branch to build')
+        stringParam('imageRepo', 'helloWorld', 'Branch to build')
+        stringParam('imageName', 'myapp', 'Branch to build')
     }
 
     definition {
