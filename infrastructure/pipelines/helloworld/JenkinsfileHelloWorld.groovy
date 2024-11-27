@@ -53,5 +53,26 @@ pipeline {
                 }
             }
         }
+        stage('Compile Project') {
+            steps {
+                dir('myapp') {
+                    sh "${MAVEN_HOME}/bin/mvn compile"
+                }
+            }
+        }
+        stage('Package Project') {
+            steps {
+                dir('myapp') {
+                    sh "${MAVEN_HOME}/bin/mvn package -DskipTests"
+                }
+            }
+        }
+        stage('Publish Artifacts') {
+            steps {
+                dir('myapp') {
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                }
+            }
+        }
     }
 }
