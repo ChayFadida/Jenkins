@@ -4,10 +4,10 @@ pipeline {
             label 'K8S-With-Docker-Maven'
         }
     }
-    environment {
-        MAVEN_HOME = '/opt/apache-maven-3.9.9/bin/mvn'  // Replace with your actual Maven directory
-        PATH = "${MAVEN_HOME}/bin:${env.PATH}"
-    }
+    // environment {
+    //     MAVEN_HOME = '/opt/apache-maven-3.9.9/bin/mvn'  // Replace with your actual Maven directory
+    //     PATH = "${MAVEN_HOME}/bin:${env.PATH}"
+    // }
     stages {
         stage('Checkout Source Code') {
             steps {
@@ -44,11 +44,11 @@ pipeline {
                         def pom = readMavenPom file: 'pom.xml'
                         def version = pom.version.tokenize('.')
                         version[-1] = (version[-1].toInteger() + 1).toString()
-                        def newVersion = version.join('.')
+                        env.NEW_VERSION = version.join('.')
                         sh """
-                            mvn versions:set -DnewVersion=${newVersion} -DgenerateBackupPoms=false
+                            mvn versions:set -DnewVersion=${NEW_VERSION} -DgenerateBackupPoms=false
                         """
-                        echo "Updated version to ${newVersion}"
+                        echo "Updated version to ${NEW_VERSION}"
                     }
                 }
             }
@@ -71,6 +71,20 @@ pipeline {
             steps {
                 dir('myapp') {
                     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('myapp') {
+                    script {
+                        docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
+                            def docker_image = docker.build("${dockerRegistry}/${imageRepo}/${imageName}:${NEW_VERSION}", "-f Dockerfile .")
+                                docker_image.push()
+                                sh "docker rmi ${docker_image.id}"
+                        }
+                    }
                 }
             }
         }

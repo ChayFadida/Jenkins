@@ -8,6 +8,11 @@ pipelineJob(JOB_NAME) {
         env('GIT_USERNAME', 'ChayFadida')
     }
 
+    parameters {
+        stringParam('branchName', '', 'Branch to build')
+        stringParam('dockerRegistry', '', 'Branch to build')
+    }
+
     definition {
         cpsScm {
             scm {
