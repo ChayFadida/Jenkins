@@ -98,25 +98,25 @@ pipeline {
         //     }
         // }
 
-        stage('Build Docker Image') {
-            steps {
-                dir('hello-world-src'){
-                    dir('myapp') {
-                        script {
-                            def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                            def sanitizedBranch = fullBranchName.replaceAll('/', '_')
-                            IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
-                            def docker_build_params = "--label 'app.branch=${fullBranchName}' --label 'app.commit=${commitHash}'"
-                            docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
-                                def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
-                                    docker_image.push()
-                                    sh "docker rmi ${docker_image.id}"
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         dir('hello-world-src'){
+        //             dir('myapp') {
+        //                 script {
+        //                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+        //                     def sanitizedBranch = fullBranchName.replaceAll('/', '_')
+        //                     IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
+        //                     def docker_build_params = "--label 'app.branch=${fullBranchName}' --label 'app.commit=${commitHash}'"
+        //                     docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
+        //                         def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
+        //                             docker_image.push()
+        //                             sh "docker rmi ${docker_image.id}"
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Update GitOps values') {
             when {
@@ -127,23 +127,21 @@ pipeline {
             steps {
                 dir('gitops') {
                     script {     
+                        // Read the Deployment YAML file
                         def helm_values_path = "hello-world-app/${HELM_VALUES_FILE}"
-
-                        // Read the Values YAML file
-                        def values = readFile(helm_values_path)
+                        def helm_values = readYaml file: helm_values_path
 
                         // Update the image tag in the Deployment YAML
-                        valuesYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/hello-world\\/${IMAGE_REPO}:)\\S+", IMAGE_TAG)
+                        helm_values.image.tag = IMAGE_TAG
 
                         // Write the modified Deployment YAML back to the file
-                        writeFile(file: helm_values_path, text: valuesYaml)
-
+                        writeYaml file: helm_values_path, data: helm_values, overwrite: true
 
                         withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                                 git config --global user.email ${GIT_MAIL}"
                                 git config --global user.name ${GIT_USERNAME}"
-                                git add ${helm_values_path}"
+                                git add ${helm_values_path}
                                 git commit -am "Update Docker image tag in ${HELM_VALUES_FILE}
                                 git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git"
                                 git status
