@@ -77,17 +77,17 @@ pipeline {
                                 mvn versions:set -DnewVersion=${NEW_VERSION} -DgenerateBackupPoms=false
                             """
                             echo "Updated version to ${NEW_VERSION}"
+                            withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                sh"""
+                                    git config --global user.email ${GIT_MAIL}"
+                                    git config --global user.name ${GIT_USERNAME}"
+                                    git add pom.xml
+                                    git commit -am "Update Pom.xml file to ${NEW_VERSION}"
+                                    git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git
+                                """
+                            }
                         }
                     }
-                withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh"""
-                        git config --global user.email ${GIT_MAIL}"
-                        git config --global user.name ${GIT_USERNAME}"
-                        git add pom.xml
-                        git commit -am "Update Pom.xml file to ${NEW_VERSION}"
-                        git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git
-                    """
-                }
                 }
             }
         }
