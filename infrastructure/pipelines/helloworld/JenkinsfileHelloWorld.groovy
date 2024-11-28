@@ -5,7 +5,7 @@ pipeline {
         }
     }
     environment {
-        IMAGE_TAG = '111'
+        IMAGE_TAG = ''
         IMAGE_REPO = ''
         HELM_VALUES_FILE = ''
     }
@@ -98,25 +98,25 @@ pipeline {
         //     }
         // }
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         dir('hello-world-src'){
-        //             dir('myapp') {
-        //                 script {
-        //                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-        //                     def sanitizedBranch = fullBranchName.replaceAll('/', '_')
-        //                     IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
-        //                     def docker_build_params = "--label 'app.branch=${fullBranchName}' --label 'app.commit=${commitHash}'"
-        //                     docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
-        //                         def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
-        //                             docker_image.push()
-        //                             sh "docker rmi ${docker_image.id}"
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        script {
+                            def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                            def sanitizedBranch = fullBranchName.replaceAll('/', '_')
+                            IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
+                            def docker_build_params = "--label 'app.branch=${fullBranchName}' --label 'app.commit=${commitHash}'"
+                            docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
+                                def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
+                                    docker_image.push()
+                                    sh "docker rmi ${docker_image.id}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Update GitOps values') {
             when {
