@@ -19,7 +19,7 @@ pipeline {
                                 branches: [[name: branchName]],
                                 extensions: [],
                                 submoduleCfg: [],
-                                userRemoteConfigs: [[url: GITOPS_REMOTE]]])
+                                userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
                         if (branchName == 'master') {
                             IMAGE_REPO = 'prod'
                             HELM_VALUES_FILE = 'values-prod.yaml'
@@ -38,7 +38,7 @@ pipeline {
                                 branches: [[name: 'master']],
                                 extensions: [],
                                 submoduleCfg: [],
-                                userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
+                                userRemoteConfigs: [[url: GITOPS_REMOTE]]])
                         sh "git checkout master"
                     }
                 }
@@ -101,10 +101,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('hello-world-src'){
-                    sh "ls"
                     dir('myapp') {
                         script {
-                            sh "ls"
                             def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                             def sanitizedBranch = branchName.replaceAll('/', '_')
                             IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
