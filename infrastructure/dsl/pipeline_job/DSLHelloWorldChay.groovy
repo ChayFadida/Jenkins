@@ -9,7 +9,7 @@ pipelineJob(JOB_NAME) {
                     key("fullBranchName")
                     value("\$.ref")
                 }
-                key("portfolio_branch")
+                key("branchName") {
                     value("\$.ref")
                     regexpFilter("^(refs\\/heads\\/)")
                 }
