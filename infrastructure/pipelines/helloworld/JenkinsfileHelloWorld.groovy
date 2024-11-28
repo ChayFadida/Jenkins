@@ -45,58 +45,79 @@ pipeline {
             }
         }
 
-        // stage('Run Maven Tests') {
-        //     steps {
-        //         dir('myapp') {
-        //             sh "mvn clean test -DskipTests=false"
-        //         }
-        //     }
-        // }
+        stage('Run Maven Tests') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        sh "mvn clean test -DskipTests=false"
+                    }
+                }
+            }
+        }
 
-        // stage('Publish Test Results') {
-        //     steps {
-        //         junit 'myapp/target/**/TEST-*.xml'
-        //     }
-        // }
+        stage('Publish Test Results') {
+            steps {
+                dir('hello-world-src'){
+                    junit 'myapp/target/**/TEST-*.xml'
+                }
+            }
+        }
 
-        // stage('Bump Patch Version') {
-        //     steps {
-        //         dir('myapp') {
-        //             script {
-        //                 // Increment patch version in the pom.xml
-        //                 def pom = readMavenPom file: 'pom.xml'
-        //                 def version = pom.version.tokenize('.')
-        //                 version[-1] = (version[-1].toInteger() + 1).toString()
-        //                 env.NEW_VERSION = version.join('.')
-        //                 sh """
-        //                     mvn versions:set -DnewVersion=${NEW_VERSION} -DgenerateBackupPoms=false
-        //                 """
-        //                 echo "Updated version to ${NEW_VERSION}"
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('Compile Project') {
-        //     steps {
-        //         dir('myapp') {
-        //             sh "mvn compile"
-        //         }
-        //     }
-        // }
-        // stage('Package Project') {
-        //     steps {
-        //         dir('myapp') {
-        //             sh "mvn package -DskipTests"
-        //         }
-        //     }
-        // }
-        // stage('Publish Artifacts') {
-        //     steps {
-        //         dir('myapp') {
-        //             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        //         }
-        //     }
-        // }
+        stage('Bump Patch Version') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        script {
+                            // Increment patch version in the pom.xml
+                            def pom = readMavenPom file: 'pom.xml'
+                            def version = pom.version.tokenize('.')
+                            version[-1] = (version[-1].toInteger() + 1).toString()
+                            env.NEW_VERSION = version.join('.')
+                            sh """
+                                mvn versions:set -DnewVersion=${NEW_VERSION} -DgenerateBackupPoms=false
+                            """
+                            echo "Updated version to ${NEW_VERSION}"
+                        }
+                    }
+                withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh"""
+                        git config --global user.email ${GIT_MAIL}"
+                        git config --global user.name ${GIT_USERNAME}"
+                        git add pom.xml
+                        git commit -am "Update Pom.xml file to ${NEW_VERSION}"
+                        git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git
+                    """
+                }
+                }
+            }
+        }
+        stage('Compile Project') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        sh "mvn compile"
+                    }
+                }
+            }
+        }
+        stage('Package Project') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        sh "mvn package -DskipTests"
+                    }
+                }
+            }
+        }
+        stage('Publish Artifacts') {
+            steps {
+                dir('hello-world-src'){
+                    dir('myapp') {
+                        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                    }
+                }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
