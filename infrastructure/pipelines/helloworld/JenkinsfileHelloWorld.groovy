@@ -20,6 +20,7 @@ pipeline {
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
+                        def sanitizedBranch = branchName.replaceAll("refs/heads/", "")
                         if (branchName == 'master') {
                             IMAGE_REPO = 'prod'
                             HELM_VALUES_FILE = 'values-prod.yaml'
