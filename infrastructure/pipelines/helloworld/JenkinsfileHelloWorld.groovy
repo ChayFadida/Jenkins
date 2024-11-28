@@ -20,6 +20,7 @@ pipeline {
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
+                        sh "git checkout ${branchName}"
                         if (branchName == 'master') {
                             IMAGE_REPO = 'prod'
                             HELM_VALUES_FILE = 'values-prod.yaml'
