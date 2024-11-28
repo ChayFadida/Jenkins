@@ -84,7 +84,7 @@ pipeline {
                                     git config --global user.name ${GIT_USERNAME}"
                                     git add pom.xml
                                     git commit -am "Update Pom.xml file to ${NEW_VERSION}"
-                                    git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git
+                                    git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChay.git
                                 """
                             }
                         }
