@@ -26,7 +26,6 @@ pipelineJob(JOB_NAME) {
     }
 
     parameters {
-        stringParam('branchName', '', 'Branch to build')
         stringParam('dockerRegistry', 'harbor.chay-Techs.com', 'Branch to build')
     }
 
