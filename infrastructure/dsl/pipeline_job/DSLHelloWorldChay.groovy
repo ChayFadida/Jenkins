@@ -14,9 +14,13 @@ pipelineJob(JOB_NAME) {
                     value("\$.ref")
                     regexpFilter("^(refs\\/heads\\/)")
                 }
+                genericVariable {
+                    key("commitAuthor")
+                    value("\$.head_commit.author.name")
+                }
             }
-            regexpFilterText("\$fullBranchName")
-            regexpFilterExpression("^(refs\\/heads\\/(master|staging))*?\$")
+            regexpFilterText("\$fullBranchName \$commitAuthor")
+            regexpFilterExpression("^(refs\\/heads\\/(master|staging)) .*?(?!root)\$")
             printContributedVariables(true)
             printPostContent(true)
             tokenCredentialId('HelloWorld-CI-Webhook-Token')
