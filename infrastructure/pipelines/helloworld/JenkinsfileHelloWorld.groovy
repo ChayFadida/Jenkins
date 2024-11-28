@@ -16,15 +16,14 @@ pipeline {
                 dir('hello-world-src') {
                     script {
                         def gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: branchName]],
+                                branches: [[name: fullBranchName]],
                                 extensions: [],
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
-                        def sanitizedBranch = branchName.replaceAll("refs/heads/", "")
-                        if (sanitizedBranch == 'master') {
+                        if (branchName == 'master') {
                             IMAGE_REPO = 'prod'
                             HELM_VALUES_FILE = 'values-prod.yaml'
-                        } else if (sanitizedBranch == 'staging') {
+                        } else if (branchName == 'staging') {
                             IMAGE_REPO = 'staging'
                             HELM_VALUES_FILE = 'values-staging.yaml'
                         } else {
@@ -105,9 +104,9 @@ pipeline {
                     dir('myapp') {
                         script {
                             def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                            def sanitizedBranch = branchName.replaceAll('/', '_')
+                            def sanitizedBranch = fullBranchName.replaceAll('/', '_')
                             IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
-                            def docker_build_params = "--label 'app.branch=${branchName}' --label 'app.commit=${commitHash}'"
+                            def docker_build_params = "--label 'app.branch=${fullBranchName}' --label 'app.commit=${commitHash}'"
                             docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
                                 def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
                                     docker_image.push()

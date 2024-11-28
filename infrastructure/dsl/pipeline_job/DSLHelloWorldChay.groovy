@@ -6,11 +6,15 @@ pipelineJob(JOB_NAME) {
         genericTrigger {
             genericVariables {
                 genericVariable {
-                    key("branchName")
+                    key("fullBranchName")
                     value("\$.ref")
                 }
+                key("portfolio_branch")
+                    value("\$.ref")
+                    regexpFilter("^(refs\\/heads\\/)")
+                }
             }
-            regexpFilterText("\$branchName")
+            regexpFilterText("\$fullBranchName")
             regexpFilterExpression("^(refs\\/heads\\/(master|staging))*?\$")
             printContributedVariables(true)
             printPostContent(true)
