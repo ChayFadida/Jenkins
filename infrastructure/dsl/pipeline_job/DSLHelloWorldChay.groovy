@@ -20,7 +20,7 @@ pipelineJob(JOB_NAME) {
                 }
             }
             regexpFilterText("\$fullBranchName \$commitAuthor")
-            regexpFilterExpression("^(refs\\/heads\\/(master|staging)) .*?(?!root)\$")
+            regexpFilterExpression("^(refs\\/heads\\/(master|staging)) (?!root).*?\$")
             printContributedVariables(true)
             printPostContent(true)
             tokenCredentialId('HelloWorld-CI-Webhook-Token')
