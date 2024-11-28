@@ -127,21 +127,23 @@ pipeline {
             steps {
                 dir('gitops') {
                     script {     
-                        // Read the Deployment YAML file
                         def helm_values_path = "hello-world-app/${HELM_VALUES_FILE}"
-                        def helm_values = readYaml file: helm_values_path
+
+                        // Read the Values YAML file
+                        def values = readFile(helm_values_path)
 
                         // Update the image tag in the Deployment YAML
-                        helm_values.image.tag = IMAGE_TAG
+                        valuesYaml = deploymentYaml.replaceAll("(?<=image: harbor\\.chay-techs\\.com\\/hello-world\\/${IMAGE_REPO}:)\\S+", IMAGE_TAG)
 
                         // Write the modified Deployment YAML back to the file
-                        writeYaml file: helm_values_path, data: helm_values, overwrite: true
+                        writeFile(file: helm_values_path, text: valuesYaml)
+
 
                         withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                                 git config --global user.email ${GIT_MAIL}"
                                 git config --global user.name ${GIT_USERNAME}"
-                                git status
+                                git add ${helm_values_path}"
                                 git commit -am "Update Docker image tag in ${HELM_VALUES_FILE}
                                 git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git"
                                 git status
