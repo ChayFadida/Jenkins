@@ -141,7 +141,8 @@ pipeline {
                             sh """
                                 git config --global user.email ${GIT_MAIL}"
                                 git config --global user.name ${GIT_USERNAME}"
-                                git commit -am "Update Docker image tag in ${HELM_VALUES_FILE}
+                                git add ${helm_values_path}
+                                git commit -am "Update Docker image tag in ${HELM_VALUES_FILE}"
                                 git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git
                             """
                         }
