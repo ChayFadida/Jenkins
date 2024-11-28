@@ -4,20 +4,43 @@ pipeline {
             label 'K8S-With-Docker-Maven'
         }
     }
-    // environment {
-    //     MAVEN_HOME = '/opt/apache-maven-3.9.9/bin/mvn'  // Replace with your actual Maven directory
-    //     PATH = "${MAVEN_HOME}/bin:${env.PATH}"
-    // }
+    environment {
+        IMAGE_TAG = ''
+        IMAGE_REPO = ''
+        HELM_VALUES_FILE = ''
+    }
     stages {
         stage('Checkout Source Code') {
             steps {
-                script {
-                    checkout([$class: 'GitSCM',
-                              branches: [[name: 'master']],
-                              doGenerateSubmoduleConfigurations: false,
-                              extensions: [],
-                              submoduleCfg: [],
-                              userRemoteConfigs: [[url: GIT_REMOTE]]])
+                cleanWs()
+                dir('hello-world-src') {
+                    script {
+                        def gitInfo = checkout([$class: 'GitSCM',
+                                branches: [[name: branchName]],
+                                extensions: [],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: GITOPS_REMOTE]]])
+                        if (branchName == 'master') {
+                            IMAGE_REPO = 'prod'
+                            HELM_VALUES_FILE = 'values-prod.yaml'
+                        } else if (branchName == 'staging') {
+                            IMAGE_REPO = 'staging'
+                            HELM_VALUES_FILE = 'values-staging.yaml'
+                        } else {
+                            IMAGE_REPO = 'dev'
+                        }
+                    }
+                }
+
+                dir('gitops') {
+                    script {
+                        checkout([$class: 'GitSCM',
+                                branches: [[name: 'master']],
+                                extensions: [],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
+                        sh "git checkout master"
+                    }
                 }
             }
         }
@@ -77,10 +100,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('myapp') {
+                dir('hello-world-src/myapp') {
                     script {
+                        def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                        def sanitizedBranch = branchName.replaceAll('/', '_')
+                        IMAGE_TAG = "${sanitizedBranch}_${commitHash}"
+                        def docker_build_params = "--label 'app.branch=${branchName}' --label 'app.commit=${commitHash}'"
                         docker.withRegistry("https://${dockerRegistry}", 'harbor-cred-secret') {
-                            def docker_image = docker.build("${dockerRegistry}/${imageRepo}/${imageName}:11", "--no-cache -f Dockerfile .")
+                            def docker_image = docker.build("${dockerRegistry}/hello-world/${IMAGE_REPO}:${IMAGE_TAG}", "${docker_build_params} --no-cache -f Dockerfile .")
                                 docker_image.push()
                                 sh "docker rmi ${docker_image.id}"
                         }
@@ -88,5 +115,38 @@ pipeline {
                 }
             }
         }
+
+        stage('Update GitOps values') {
+            when {
+                expression {
+                    branchName == 'master' || branchName == 'staging'
+                }
+            }
+            steps {
+                dir('gitops') {
+                    script {     
+                        // Read the Deployment YAML file
+                        def helm_values_path = "hello-world-app/${HELM_VALUES_FILE}"
+                        def helm_values = readYaml file: helm_values_path
+
+                        // Update the image tag in the Deployment YAML
+                        helm_values.image.tag = IMAGE_TAG
+
+                        // Write the modified Deployment YAML back to the file
+                        writeYaml file: helm_values_path, data: helm_values, overwrite: true
+
+                        withCredentials([usernamePassword(credentialsId: 'github-secret-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh """
+                                git config --global user.email ${GIT_MAIL}"
+                                git config --global user.name ${GIT_USERNAME}"
+                                git commit -am "Update Docker image tag in ${HELM_VALUES_FILE}
+                                git push https://$USERNAME:$PASSWORD@github.com/ChayFadida/HelloWorldChayGitOps.git"
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

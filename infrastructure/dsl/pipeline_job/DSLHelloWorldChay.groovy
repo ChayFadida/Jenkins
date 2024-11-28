@@ -2,17 +2,32 @@ def JOB_NAME = "pipelines/Hello-World-Chay"
 
 pipelineJob(JOB_NAME) {
     description 'Hello World Chay CI'
+    triggers {
+        genericTrigger {
+            genericVariables {
+                genericVariable {
+                    key("branchName")
+                    value("\$.ref")
+                }
+            }
+            regexpFilterText("\$branchName")
+            regexpFilterExpression("^(refs\\/heads\\/(master|staging))*?\$")
+            printContributedVariables(true)
+            printPostContent(true)
+            tokenCredentialId('HelloWorld-CI-Webhook-Token')
+        }
+    }
+
     environmentVariables {
-        env("GIT_REMOTE", 'https://github.com/ChayFadida/HelloWorldChay.git')
+        env("GIT_SRC_REMOTE", 'https://github.com/ChayFadida/HelloWorldChay.git')
+        env("GITOPS_REMOTE", 'https://github.com/ChayFadida/HelloWorldChayGitOps.git')
         env('DOCKER_REGISTRY', 'harbor.chay-techs.com')
         env('GIT_USERNAME', 'ChayFadida')
     }
 
     parameters {
         stringParam('branchName', '', 'Branch to build')
-        stringParam('dockerRegistry', 'Harbor.Chay-Techs.com', 'Branch to build')
-        stringParam('imageRepo', 'hello-world', 'Branch to build')
-        stringParam('imageName', 'myapp', 'Branch to build')
+        stringParam('dockerRegistry', 'harbor.chay-Techs.com', 'Branch to build')
     }
 
     definition {
