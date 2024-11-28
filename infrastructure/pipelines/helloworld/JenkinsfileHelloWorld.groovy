@@ -21,10 +21,10 @@ pipeline {
                                 submoduleCfg: [],
                                 userRemoteConfigs: [[url: GIT_SRC_REMOTE]]])
                         def sanitizedBranch = branchName.replaceAll("refs/heads/", "")
-                        if (branchName == 'master') {
+                        if (sanitizedBranch == 'master') {
                             IMAGE_REPO = 'prod'
                             HELM_VALUES_FILE = 'values-prod.yaml'
-                        } else if (branchName == 'staging') {
+                        } else if (sanitizedBranch == 'staging') {
                             IMAGE_REPO = 'staging'
                             HELM_VALUES_FILE = 'values-staging.yaml'
                         } else {
