@@ -5,7 +5,7 @@ pipeline {
         }
     }
     environment {
-        IMAGE_TAG = ''
+        IMAGE_TAG = '111'
         IMAGE_REPO = ''
         HELM_VALUES_FILE = ''
     }
