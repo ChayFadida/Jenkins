@@ -5,9 +5,9 @@ pipeline {
         }
     }
     environment {
-        EMAIL_CREDENTIAL = credentials('STUDFORSTUD-EMAIL_CREDENTIAL')
-        API_KEY_CREDENTIAL = credentials('STUDFORSTUD-API_KEY_CREDENTIAL')
-        ZONE_IDENTIFIER_CREDENTIAL = credentials('STUDFORSTUD-ZONE_IDENTIFIER_CREDENTIAL')
+        EMAIL_CREDENTIAL = credentials('ACTIS-EMAIL_CREDENTIAL')
+        API_KEY_CREDENTIAL = credentials('ACTIS-API_KEY_CREDENTIAL')
+        ZONE_IDENTIFIER_CREDENTIAL = credentials('ACTIS-ZONE_IDENTIFIER_CREDENTIAL')
     }
     stages {
         stage('Checkout Source Code') {
